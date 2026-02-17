@@ -17,7 +17,7 @@ from copy import deepcopy
 from dataclasses import dataclass, field, fields, is_dataclass
 from enum import Enum, StrEnum
 from importlib.resources import files
-from typing import Any, Callable, NamedTuple, Optional, TypeVar, Union
+from typing import Any, Callable, NamedTuple, Optional, TypeVar, Union, cast
 
 import numpy as np
 import torch
@@ -330,9 +330,11 @@ class _StandaloneConfig:
                             nested_name = value[CLASS_NAME_FIELD]
                             nested_cls = cls._resolve_class(nested_name)
                             if nested_cls is not None and is_dataclass(nested_cls):
-                                valid[key] = nested_cls.from_dict(
-                                    {k: v for k, v in value.items() if k != CLASS_NAME_FIELD}
-                                )
+                                from_dict = getattr(nested_cls, "from_dict", None)
+                                if callable(from_dict):
+                                    valid[key] = from_dict(
+                                        {k: v for k, v in value.items() if k != CLASS_NAME_FIELD}
+                                    )
                     return resolved(**valid)
                 cleaned[CLASS_NAME_FIELD] = class_name
             return cleaned
@@ -352,7 +354,9 @@ class _StandaloneConfig:
         if isinstance(cleaned, dict) and CLASS_NAME_FIELD in cleaned:
             resolved = cls._resolve_class(cleaned[CLASS_NAME_FIELD])
             if resolved is not None:
-                return resolved.from_dict({k: v for k, v in cleaned.items() if k != CLASS_NAME_FIELD})
+                from_dict = getattr(resolved, "from_dict", None)
+                if callable(from_dict):
+                    return cast(C, from_dict({k: v for k, v in cleaned.items() if k != CLASS_NAME_FIELD}))
             raise ValueError(f"Cannot resolve class: {cleaned[CLASS_NAME_FIELD]}")
         if isinstance(cleaned, dict):
             field_names = {f.name for f in fields(cls)}
@@ -385,7 +389,7 @@ class _StandaloneConfig:
             if isinstance(obj, (list, tuple)):
                 return type(obj)(convert(x) if recurse else x for x in obj)
             return obj
-        return convert(self)
+        return cast("dict[str, Any]", convert(self))
 
     def validate(self) -> None:
         pass
@@ -504,11 +508,11 @@ def _dispatch_flash_attn(
         max_seqlen_k = max_seqlen_k or max_seqlen
     varlen = all(x is not None for x in (cu_seqlens_q, cu_seqlens_k, max_seqlen_q, max_seqlen_k))
     if varlen:
-        return flash_attn.flash_attn_varlen_func(
+        return cast(Tensor, flash_attn.flash_attn_varlen_func(
             q, k, v, cu_seqlens_q, cu_seqlens_k, max_seqlen_q, max_seqlen_k,
             dropout_p=dropout_p, softmax_scale=softmax_scale, causal=causal,
-        )
-    return flash_attn.flash_attn_func(q, k, v, dropout_p=dropout_p, softmax_scale=softmax_scale, causal=causal)
+        ))
+    return cast(Tensor, flash_attn.flash_attn_func(q, k, v, dropout_p=dropout_p, softmax_scale=softmax_scale, causal=causal))
 
 
 class Attention(nn.Module):
@@ -582,7 +586,7 @@ class Attention(nn.Module):
             cu_seqlens_k=cu_seqlens_k, max_seqlen=max_seqlen, max_seqlen_q=max_seqlen_q,
             max_seqlen_k=max_seqlen_k, attn_mask=attn_mask)
         x = x.transpose(1, 2).reshape(orig_shape)
-        return self.proj_drop(self.proj(x))
+        return cast(Tensor, self.proj_drop(self.proj(x)))
 
 
 class Mlp(nn.Module):
@@ -598,7 +602,7 @@ class Mlp(nn.Module):
         self.drop2 = nn.Dropout(drop)
 
     def forward(self, x: Tensor) -> Tensor:
-        return self.drop2(self.fc2(self.drop1(self.act(self.fc1(x)))))
+        return cast(Tensor, self.drop2(self.fc2(self.drop1(self.act(self.fc1(x))))))
 
 
 class LayerScale(nn.Module):
@@ -649,7 +653,7 @@ class Block(nn.Module):
         x = x + self.drop_path(self.ls1(self.attn(self.norm1(x), y=y, cu_seqlens=cu_seqlens,
             cu_seqlens_q=cu_seqlens_q, cu_seqlens_k=cu_seqlens_k, max_seqlen=max_seqlen,
             max_seqlen_q=max_seqlen_q, max_seqlen_k=max_seqlen_k, attn_mask=attn_mask)))
-        return x + self.drop_path(self.ls2(self.mlp(self.norm2(x))))
+        return cast(Tensor, x + self.drop_path(self.ls2(self.mlp(self.norm2(x)))))
 
     def apply_fsdp(self, **kwargs: Any) -> None:
         from torch.distributed.fsdp import fully_shard
@@ -708,7 +712,7 @@ class FlexiPatchEmbed(nn.Module):
             x = rearrange(x, "(b t) d h w -> b h w t d", b=batch_size, t=t)
         else:
             x = rearrange(x, "b d h w -> b h w d")
-        return self.norm(x)
+        return cast(Tensor, self.norm(x))
 
 
 class FlexiPatchReconstruction(nn.Module):
@@ -744,14 +748,14 @@ class FlexiPatchReconstruction(nn.Module):
             x = rearrange(x, "(b t) c h w -> b h w t c", b=b, t=t)
         else:
             x = rearrange(x, "b c h w -> b h w c")
-        return self.norm(x)
+        return cast(Tensor, self.norm(x))
 
 
 # -----------------------------------------------------------------------------
 # Utils
 # -----------------------------------------------------------------------------
 
-def unpack_encoder_output(output_dict: dict[str, Any]) -> tuple:
+def unpack_encoder_output(output_dict: dict[str, Any]) -> tuple[Any, Any, dict[str, Any]]:
     latent = output_dict.pop("tokens_and_masks", None)
     latent_projected_and_pooled = output_dict.pop("project_aggregated", None)
     output_dict.pop("token_norm_stats", None)
@@ -768,7 +772,7 @@ def get_cumulative_sequence_lengths(seq_lengths: Tensor) -> Tensor:
 class DistributedMixins:
     def apply_ddp(self, dp_mesh: Any = None, **kwargs: Any) -> None:
         from torch.distributed._composable.replicate import replicate
-        replicate(self, device_mesh=dp_mesh, bucket_cap_mb=100, find_unused_parameters=kwargs.get("find_unused_parameters", True))
+        replicate(cast(nn.Module, self), device_mesh=dp_mesh, bucket_cap_mb=100, find_unused_parameters=kwargs.get("find_unused_parameters", True))
 
 
 # -----------------------------------------------------------------------------
@@ -829,8 +833,11 @@ class TokensAndMasks(NamedTuple):
     def _flatten(x: Tensor) -> Tensor:
         return rearrange(x, "b ... d -> b (...) d")
 
-    def flatten_tokens_and_masks(self, return_lists: bool = False) -> tuple[Tensor, Tensor]:
-        flattened_x, flattened_masks = [], []
+    def flatten_tokens_and_masks(
+        self, return_lists: bool = False
+    ) -> tuple[Tensor, Tensor] | tuple[list[Tensor], list[Tensor]]:
+        flattened_x: list[Tensor] = []
+        flattened_masks: list[Tensor] = []
         for attr_name in self.modalities:
             mask_name = self.get_masked_modality_name(attr_name)
             attr = getattr(self, attr_name)
@@ -862,7 +869,7 @@ class TokensAndMasks(NamedTuple):
 class ProjectAndAggregate(nn.Module):
     def __init__(self, embedding_size: int, num_layers: int = 1, aggregate_then_project: bool = True):
         super().__init__()
-        layers = [nn.Linear(embedding_size, embedding_size)]
+        layers: list[nn.Module] = [nn.Linear(embedding_size, embedding_size)]
         for _ in range(1, num_layers):
             layers.extend([nn.ReLU(), nn.Linear(embedding_size, embedding_size)])
         self.projection = nn.Sequential(*layers)
@@ -875,7 +882,7 @@ class ProjectAndAggregate(nn.Module):
             pooled = reduce(x, "b ... d -> b d", "mean")
         else:
             raise ValueError(f"Invalid type: {type(x)}")
-        return self.projection(pooled)
+        return cast(Tensor, self.projection(pooled))
 
 
 # -----------------------------------------------------------------------------
@@ -915,9 +922,9 @@ class MultiModalPatchEmbeddings(nn.Module):
                     for idx, channel_idxs in enumerate(bandset_indices)
                 })
         for modality in supported_modality_names:
-            for idx, bandset_indices in enumerate(self.tokenization_config.get_bandset_indices(modality)):
+            for idx, channel_idxs in enumerate(self.tokenization_config.get_bandset_indices(modality)):
                 name = f"{modality}__{idx}_buffer"
-                self.register_buffer(name, torch.tensor(bandset_indices, dtype=torch.long), persistent=False)
+                self.register_buffer(name, torch.tensor(channel_idxs, dtype=torch.long), persistent=False)
 
     def _get_embedding_name(self, modality: str, idx: int) -> str:
         return f"{modality}__{idx}"
@@ -939,7 +946,9 @@ class MultiModalPatchEmbeddings(nn.Module):
             for idx in range(num_band_sets):
                 buffer_name = f"{modality}__{idx}_buffer"
                 patchified = torch.index_select(modality_data, -1, getattr(self, buffer_name))
-                emb_mod = self.per_modality_embeddings[modality][self._get_embedding_name(modality, idx)]
+                emb_mod = cast(nn.ModuleDict, self.per_modality_embeddings[modality])[
+                    self._get_embedding_name(modality, idx)
+                ]
                 if spec.is_spatial:
                     patchified = emb_mod(patchified, patch_size=patch_size)
                 else:
@@ -1280,21 +1289,21 @@ class OlmoEarthPretrain_v1(nn.Module):
             supported_modality_names = DEFAULT_MODALITIES
         cfg = MODEL_SIZE_CONFIGS[config_key]
         encoder_config = EncoderConfig(
-            embedding_size=cfg["encoder_embedding_size"],
-            num_heads=cfg["encoder_num_heads"],
-            depth=cfg["encoder_depth"],
-            mlp_ratio=cfg["mlp_ratio"],
+            embedding_size=int(cfg["encoder_embedding_size"]),
+            num_heads=int(cfg["encoder_num_heads"]),
+            depth=int(cfg["encoder_depth"]),
+            mlp_ratio=float(cfg["mlp_ratio"]),
             supported_modality_names=supported_modality_names,
             max_patch_size=max_patch_size,
             drop_path=drop_path,
             max_sequence_length=max_sequence_length,
         )
         decoder_config = PredictorConfig(
-            encoder_embedding_size=cfg["encoder_embedding_size"],
-            decoder_embedding_size=cfg["decoder_embedding_size"],
-            depth=cfg["decoder_depth"],
-            mlp_ratio=cfg["mlp_ratio"],
-            num_heads=cfg["decoder_num_heads"],
+            encoder_embedding_size=int(cfg["encoder_embedding_size"]),
+            decoder_embedding_size=int(cfg["decoder_embedding_size"]),
+            depth=int(cfg["decoder_depth"]),
+            mlp_ratio=float(cfg["mlp_ratio"]),
+            num_heads=int(cfg["decoder_num_heads"]),
             supported_modality_names=supported_modality_names,
             max_sequence_length=max_sequence_length,
         )
@@ -1315,10 +1324,10 @@ class OlmoEarthPretrain_v1(nn.Module):
 # Normalizer (data preprocessing)
 # -----------------------------------------------------------------------------
 
-def _load_olmoearth_norm_config() -> dict[str, dict]:
+def _load_olmoearth_norm_config() -> dict[str, dict[str, Any]]:
     """Load computed normalization config from package data."""
     with files("torchgeo").joinpath("models", "olmoearth_computed_norm.json").open() as f:
-        return json.load(f)
+        return cast("dict[str, dict[str, Any]]", json.load(f))
 
 
 class Normalizer:
