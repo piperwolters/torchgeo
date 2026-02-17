@@ -97,110 +97,119 @@ class Modality:
     """Enum-like access to ModalitySpecs."""
 
     SENTINEL2_L2A = ModalitySpec(
-        name="sentinel2_l2a",
+        name='sentinel2_l2a',
         tile_resolution_factor=16,
         band_sets=[
-            BandSet(["B02", "B03", "B04", "B08"], 16),
-            BandSet(["B05", "B06", "B07", "B8A", "B11", "B12"], 32),
-            BandSet(["B01", "B09"], 64),
+            BandSet(['B02', 'B03', 'B04', 'B08'], 16),
+            BandSet(['B05', 'B06', 'B07', 'B8A', 'B11', 'B12'], 32),
+            BandSet(['B01', 'B09'], 64),
         ],
         is_multitemporal=True,
         ignore_when_parsing=False,
     )
     SENTINEL1 = ModalitySpec(
-        name="sentinel1",
+        name='sentinel1',
         tile_resolution_factor=16,
-        band_sets=[BandSet(["vv", "vh"], 16)],
+        band_sets=[BandSet(['vv', 'vh'], 16)],
         is_multitemporal=True,
         ignore_when_parsing=False,
     )
     LANDSAT = ModalitySpec(
-        name="landsat",
+        name='landsat',
         tile_resolution_factor=16,
         band_sets=[
-            BandSet(["B8"], 16),
-            BandSet(["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B9", "B10", "B11"], 32),
+            BandSet(['B8'], 16),
+            BandSet(['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B9', 'B10', 'B11'], 32),
         ],
         is_multitemporal=True,
         ignore_when_parsing=False,
     )
     WORLDCOVER = ModalitySpec(
-        name="worldcover",
+        name='worldcover',
         tile_resolution_factor=16,
-        band_sets=[BandSet(["B1"], 16)],
+        band_sets=[BandSet(['B1'], 16)],
         is_multitemporal=False,
         ignore_when_parsing=False,
     )
     SRTM = ModalitySpec(
-        name="srtm",
+        name='srtm',
         tile_resolution_factor=16,
-        band_sets=[BandSet(["srtm"], 16)],
+        band_sets=[BandSet(['srtm'], 16)],
         is_multitemporal=False,
         ignore_when_parsing=False,
     )
     OPENSTREETMAP_RASTER = ModalitySpec(
-        name="openstreetmap_raster",
+        name='openstreetmap_raster',
         tile_resolution_factor=16,
-        band_sets=[BandSet([f"b{i}" for i in range(40)], 4)],
+        band_sets=[BandSet([f'b{i}' for i in range(40)], 4)],
         is_multitemporal=False,
         ignore_when_parsing=False,
     )
     WRI_CANOPY_HEIGHT_MAP = ModalitySpec(
-        name="wri_canopy_height_map",
+        name='wri_canopy_height_map',
         tile_resolution_factor=16,
-        band_sets=[BandSet(["B1"], 16)],
+        band_sets=[BandSet(['B1'], 16)],
         is_multitemporal=False,
         ignore_when_parsing=False,
     )
     CDL = ModalitySpec(
-        name="cdl",
+        name='cdl',
         tile_resolution_factor=16,
-        band_sets=[BandSet(["cdl"], 16)],
+        band_sets=[BandSet(['cdl'], 16)],
         is_multitemporal=False,
         ignore_when_parsing=False,
     )
     WORLDCEREAL = ModalitySpec(
-        name="worldcereal",
+        name='worldcereal',
         tile_resolution_factor=16,
-        band_sets=[BandSet([f"b{i}" for i in range(8)], 16)],
+        band_sets=[BandSet([f'b{i}' for i in range(8)], 16)],
         is_multitemporal=False,
         ignore_when_parsing=False,
     )
     NAIP = ModalitySpec(
-        name="naip",
+        name='naip',
         tile_resolution_factor=1,
-        band_sets=[BandSet(["R", "G", "B", "IR"], 1)],
+        band_sets=[BandSet(['R', 'G', 'B', 'IR'], 1)],
         is_multitemporal=False,
         ignore_when_parsing=False,
     )
     LATLON = ModalitySpec(
-        name="latlon",
+        name='latlon',
         tile_resolution_factor=0,
-        band_sets=[BandSet(["lat", "lon"], 0)],
+        band_sets=[BandSet(['lat', 'lon'], 0)],
         is_multitemporal=False,
         ignore_when_parsing=True,
     )
     WORLDPOP = ModalitySpec(
-        name="worldpop",
+        name='worldpop',
         tile_resolution_factor=16,
-        band_sets=[BandSet(["B1"], 16)],
+        band_sets=[BandSet(['B1'], 16)],
         is_multitemporal=False,
         ignore_when_parsing=False,
     )
     GSE = ModalitySpec(
-        name="gse",
+        name='gse',
         tile_resolution_factor=16,
-        band_sets=[BandSet([f"A{idx:02d}" for idx in range(64)], 16)],
+        band_sets=[BandSet([f'A{idx:02d}' for idx in range(64)], 16)],
         is_multitemporal=False,
         ignore_when_parsing=False,
     )
     ERA5_10 = ModalitySpec(
-        name="era5_10",
+        name='era5_10',
         tile_resolution_factor=16,
-        band_sets=[BandSet([
-            "2m-temperature", "2m-dewpoint-temperature", "surface-pressure",
-            "10m-u-component-of-wind", "10m-v-component-of-wind", "total-precipitation",
-        ], 4096)],
+        band_sets=[
+            BandSet(
+                [
+                    '2m-temperature',
+                    '2m-dewpoint-temperature',
+                    'surface-pressure',
+                    '10m-u-component-of-wind',
+                    '10m-v-component-of-wind',
+                    'total-precipitation',
+                ],
+                4096,
+            )
+        ],
         is_multitemporal=True,
         ignore_when_parsing=False,
         image_tile_size_factor=-256,
@@ -216,7 +225,8 @@ class Modality:
     @classmethod
     def values(cls) -> list[ModalitySpec]:
         return [
-            getattr(cls, k) for k in dir(cls)
+            getattr(cls, k)
+            for k in dir(cls)
             if isinstance(getattr(cls, k), ModalitySpec)
         ]
 
@@ -279,21 +289,24 @@ class MaskedOlmoEarthSample(NamedTuple):
     @property
     def modalities(self) -> list[str]:
         return [
-            f for f in self._fields
-            if not f.endswith("_mask") and f != "timestamps" and getattr(self, f) is not None
+            f
+            for f in self._fields
+            if not f.endswith('_mask')
+            and f != 'timestamps'
+            and getattr(self, f) is not None
         ]
 
     @staticmethod
     def get_masked_modality_name(modality: str) -> str:
-        return f"{modality}_mask"
+        return f'{modality}_mask'
 
 
 # -----------------------------------------------------------------------------
 # Config (for loading from Hugging Face config.json)
 # -----------------------------------------------------------------------------
 
-C = TypeVar("C", bound="_StandaloneConfig")
-CLASS_NAME_FIELD = "_CLASS_"
+C = TypeVar('C', bound='_StandaloneConfig')
+CLASS_NAME_FIELD = '_CLASS_'
 
 # Map Hugging Face config class paths to local class names (filled after classes are defined)
 _CONFIG_CLASS_MAP: dict[str, type] = {}
@@ -306,20 +319,22 @@ def _register_config_class(cls: type) -> type:
 
 @dataclass
 class _StandaloneConfig:
-    CLASS_NAME_FIELD = "_CLASS_"
+    CLASS_NAME_FIELD = '_CLASS_'
 
     @classmethod
     def _resolve_class(cls, class_name: str) -> type | None:
-        if "." not in class_name:
+        if '.' not in class_name:
             return None
-        *_, cls_name = class_name.split(".")
+        *_, cls_name = class_name.split('.')
         return _CONFIG_CLASS_MAP.get(cls_name)
 
     @classmethod
     def _clean_data(cls, data: Any) -> Any:
         if isinstance(data, dict):
             class_name = data.get(CLASS_NAME_FIELD)
-            cleaned = {k: cls._clean_data(v) for k, v in data.items() if k != CLASS_NAME_FIELD}
+            cleaned = {
+                k: cls._clean_data(v) for k, v in data.items() if k != CLASS_NAME_FIELD
+            }
             if class_name is not None:
                 resolved = cls._resolve_class(class_name)
                 if resolved is not None and is_dataclass(resolved):
@@ -330,10 +345,14 @@ class _StandaloneConfig:
                             nested_name = value[CLASS_NAME_FIELD]
                             nested_cls = cls._resolve_class(nested_name)
                             if nested_cls is not None and is_dataclass(nested_cls):
-                                from_dict = getattr(nested_cls, "from_dict", None)
+                                from_dict = getattr(nested_cls, 'from_dict', None)
                                 if callable(from_dict):
                                     valid[key] = from_dict(
-                                        {k: v for k, v in value.items() if k != CLASS_NAME_FIELD}
+                                        {
+                                            k: v
+                                            for k, v in value.items()
+                                            if k != CLASS_NAME_FIELD
+                                        }
                                     )
                     return resolved(**valid)
                 cleaned[CLASS_NAME_FIELD] = class_name
@@ -347,21 +366,30 @@ class _StandaloneConfig:
         cls: type[C], data: dict[str, Any], overrides: list[str] | None = None
     ) -> C:
         if overrides:
-            warnings.warn("Config overrides ignored in standalone mode.", UserWarning, stacklevel=2)
+            warnings.warn(
+                'Config overrides ignored in standalone mode.',
+                UserWarning,
+                stacklevel=2,
+            )
         cleaned = cls._clean_data(data)
         if is_dataclass(cleaned) and not isinstance(cleaned, type):
             return cleaned  # type: ignore[return-value]
         if isinstance(cleaned, dict) and CLASS_NAME_FIELD in cleaned:
             resolved = cls._resolve_class(cleaned[CLASS_NAME_FIELD])
             if resolved is not None:
-                from_dict = getattr(resolved, "from_dict", None)
+                from_dict = getattr(resolved, 'from_dict', None)
                 if callable(from_dict):
-                    return cast(C, from_dict({k: v for k, v in cleaned.items() if k != CLASS_NAME_FIELD}))
-            raise ValueError(f"Cannot resolve class: {cleaned[CLASS_NAME_FIELD]}")
+                    return cast(
+                        C,
+                        from_dict(
+                            {k: v for k, v in cleaned.items() if k != CLASS_NAME_FIELD}
+                        ),
+                    )
+            raise ValueError(f'Cannot resolve class: {cleaned[CLASS_NAME_FIELD]}')
         if isinstance(cleaned, dict):
             field_names = {f.name for f in fields(cls)}
             return cls(**{k: v for k, v in cleaned.items() if k in field_names})  # type: ignore[call-arg]
-        raise TypeError(f"Expected dict, got {type(cleaned)}")
+        raise TypeError(f'Expected dict, got {type(cleaned)}')
 
     def as_dict(
         self,
@@ -375,9 +403,11 @@ class _StandaloneConfig:
             if is_dataclass(obj) and not isinstance(obj, type):
                 result = {}
                 if include_class_name:
-                    result[CLASS_NAME_FIELD] = f"{obj.__class__.__module__}.{obj.__class__.__name__}"
+                    result[CLASS_NAME_FIELD] = (
+                        f'{obj.__class__.__module__}.{obj.__class__.__name__}'
+                    )
                 for fld in fields(obj):
-                    if exclude_private_fields and fld.name.startswith("_"):
+                    if exclude_private_fields and fld.name.startswith('_'):
                         continue
                     v = getattr(obj, fld.name)
                     if exclude_none and v is None:
@@ -389,7 +419,8 @@ class _StandaloneConfig:
             if isinstance(obj, (list, tuple)):
                 return type(obj)(convert(x) if recurse else x for x in obj)
             return obj
-        return cast("dict[str, Any]", convert(self))
+
+        return cast('dict[str, Any]', convert(self))
 
     def validate(self) -> None:
         pass
@@ -402,13 +433,17 @@ class _StandaloneConfig:
 # Tokenization config
 # -----------------------------------------------------------------------------
 
+
 @dataclass
 class ModalityTokenization:
     band_groups: list[list[str]]
 
     def compute_indices(self, base_modality: ModalitySpec) -> list[list[int]]:
         name_to_idx = {name: i for i, name in enumerate(base_modality.band_order)}
-        return [[name_to_idx[b] for b in group if b in name_to_idx] for group in self.band_groups]
+        return [
+            [name_to_idx[b] for b in group if b in name_to_idx]
+            for group in self.band_groups
+        ]
 
     @property
     def num_band_sets(self) -> int:
@@ -418,7 +453,9 @@ class ModalityTokenization:
 @dataclass
 class TokenizationConfig:
     overrides: dict[str, ModalityTokenization] = field(default_factory=dict)
-    _bandset_indices_cache: dict[str, list[list[int]]] = field(default_factory=dict, init=False, repr=False)
+    _bandset_indices_cache: dict[str, list[list[int]]] = field(
+        default_factory=dict, init=False, repr=False
+    )
 
     def get_bandset_indices(self, modality_name: str) -> list[list[int]]:
         if modality_name in self._bandset_indices_cache:
@@ -441,12 +478,13 @@ class TokenizationConfig:
 # Position encodings
 # -----------------------------------------------------------------------------
 
+
 def get_1d_sincos_pos_encoding(pos: Tensor, encoding_dim: int) -> Tensor:
     assert encoding_dim % 2 == 0
     omega = torch.arange(encoding_dim // 2, device=pos.device) / encoding_dim / 2.0
-    omega = 1.0 / (10000 ** omega)
+    omega = 1.0 / (10000**omega)
     pos = pos.reshape(-1)
-    out = torch.einsum("l,d->ld", pos.float(), omega)
+    out = torch.einsum('l,d->ld', pos.float(), omega)
     return torch.cat([torch.sin(out), torch.cos(out)], dim=1)
 
 
@@ -459,17 +497,27 @@ def get_2d_sincos_pos_encoding(grid: Tensor, encoding_dim: int) -> Tensor:
 
 
 def get_2d_sincos_pos_encoding_with_resolution(
-    grid_size: int, res: Tensor, encoding_dim: int, device: torch.device, cls_token: bool = False
+    grid_size: int,
+    res: Tensor,
+    encoding_dim: int,
+    device: torch.device,
+    cls_token: bool = False,
 ) -> Tensor:
     grid_h = torch.arange(grid_size, device=device)
     grid_w = torch.arange(grid_size, device=device)
-    grid = torch.stack(torch.meshgrid(grid_w, grid_h, indexing="xy"), dim=0)  # 2 x h x w
-    grid = torch.einsum("chw,n->cnhw", grid, res)  # 2 x n x h x w
+    grid = torch.stack(
+        torch.meshgrid(grid_w, grid_h, indexing='xy'), dim=0
+    )  # 2 x h x w
+    grid = torch.einsum('chw,n->cnhw', grid, res)  # 2 x n x h x w
     _, n, h, w = grid.shape
     grid = grid.reshape(2, n * h * w)
-    pos_embed = get_2d_sincos_pos_encoding(grid, encoding_dim).reshape(n, h * w, encoding_dim)
+    pos_embed = get_2d_sincos_pos_encoding(grid, encoding_dim).reshape(
+        n, h * w, encoding_dim
+    )
     if cls_token:
-        pos_embed = torch.cat([torch.zeros(n, 1, encoding_dim, device=device), pos_embed], dim=1)
+        pos_embed = torch.cat(
+            [torch.zeros(n, 1, encoding_dim, device=device), pos_embed], dim=1
+        )
     return pos_embed
 
 
@@ -493,42 +541,75 @@ except ImportError:
 
 
 def _dispatch_flash_attn(
-    q: Tensor, k: Tensor, v: Tensor,
-    cu_seqlens: Tensor | None = None, cu_seqlens_q: Tensor | None = None, cu_seqlens_k: Tensor | None = None,
-    max_seqlen: int | None = None, max_seqlen_q: int | None = None, max_seqlen_k: int | None = None,
-    dropout_p: float = 0.0, softmax_scale: float | None = None, causal: bool = False,
+    q: Tensor,
+    k: Tensor,
+    v: Tensor,
+    cu_seqlens: Tensor | None = None,
+    cu_seqlens_q: Tensor | None = None,
+    cu_seqlens_k: Tensor | None = None,
+    max_seqlen: int | None = None,
+    max_seqlen_q: int | None = None,
+    max_seqlen_k: int | None = None,
+    dropout_p: float = 0.0,
+    softmax_scale: float | None = None,
+    causal: bool = False,
 ) -> Tensor:
     if flash_attn is None:
-        raise RuntimeError("flash-attn is required for use_flash_attn=True")
+        raise RuntimeError('flash-attn is required for use_flash_attn=True')
     if cu_seqlens is not None:
         cu_seqlens_q = cu_seqlens_q or cu_seqlens
         cu_seqlens_k = cu_seqlens_k or cu_seqlens
     if max_seqlen is not None:
         max_seqlen_q = max_seqlen_q or max_seqlen
         max_seqlen_k = max_seqlen_k or max_seqlen
-    varlen = all(x is not None for x in (cu_seqlens_q, cu_seqlens_k, max_seqlen_q, max_seqlen_k))
+    varlen = all(
+        x is not None for x in (cu_seqlens_q, cu_seqlens_k, max_seqlen_q, max_seqlen_k)
+    )
     if varlen:
-        return cast(Tensor, flash_attn.flash_attn_varlen_func(
-            q, k, v, cu_seqlens_q, cu_seqlens_k, max_seqlen_q, max_seqlen_k,
-            dropout_p=dropout_p, softmax_scale=softmax_scale, causal=causal,
-        ))
-    return cast(Tensor, flash_attn.flash_attn_func(q, k, v, dropout_p=dropout_p, softmax_scale=softmax_scale, causal=causal))
+        return cast(
+            Tensor,
+            flash_attn.flash_attn_varlen_func(
+                q,
+                k,
+                v,
+                cu_seqlens_q,
+                cu_seqlens_k,
+                max_seqlen_q,
+                max_seqlen_k,
+                dropout_p=dropout_p,
+                softmax_scale=softmax_scale,
+                causal=causal,
+            ),
+        )
+    return cast(
+        Tensor,
+        flash_attn.flash_attn_func(
+            q, k, v, dropout_p=dropout_p, softmax_scale=softmax_scale, causal=causal
+        ),
+    )
 
 
 class Attention(nn.Module):
     def __init__(
-        self, dim: int, num_heads: int = 8, qkv_bias: bool = False, qk_norm: bool = False,
-        attn_drop: float = 0.0, proj_drop: float = 0.0, norm_layer: type = nn.LayerNorm,
-        cross_attn: bool = False, use_flash_attn: bool = False,
+        self,
+        dim: int,
+        num_heads: int = 8,
+        qkv_bias: bool = False,
+        qk_norm: bool = False,
+        attn_drop: float = 0.0,
+        proj_drop: float = 0.0,
+        norm_layer: type = nn.LayerNorm,
+        cross_attn: bool = False,
+        use_flash_attn: bool = False,
     ):
         super().__init__()
         assert dim % num_heads == 0
         self.num_heads = num_heads
         self.head_dim = dim // num_heads
-        self.scale = self.head_dim ** -0.5
+        self.scale = self.head_dim**-0.5
         self.cross_attn = cross_attn
         self.use_flash_attn = use_flash_attn
-        self.fast_attn = hasattr(torch.nn.functional, "scaled_dot_product_attention")
+        self.fast_attn = hasattr(torch.nn.functional, 'scaled_dot_product_attention')
         self.q = nn.Linear(dim, dim, bias=qkv_bias)
         self.k = nn.Linear(dim, dim, bias=qkv_bias)
         self.v = nn.Linear(dim, dim, bias=qkv_bias)
@@ -539,21 +620,41 @@ class Attention(nn.Module):
         self.proj_drop = nn.Dropout(proj_drop)
 
     def sdpa(
-        self, q: Tensor, k: Tensor, v: Tensor, n: int,
-        cu_seqlens: Tensor | None = None, cu_seqlens_q: Tensor | None = None, cu_seqlens_k: Tensor | None = None,
-        max_seqlen: int | None = None, max_seqlen_q: int | None = None, max_seqlen_k: int | None = None,
+        self,
+        q: Tensor,
+        k: Tensor,
+        v: Tensor,
+        n: int,
+        cu_seqlens: Tensor | None = None,
+        cu_seqlens_q: Tensor | None = None,
+        cu_seqlens_k: Tensor | None = None,
+        max_seqlen: int | None = None,
+        max_seqlen_q: int | None = None,
+        max_seqlen_k: int | None = None,
         attn_mask: Tensor | None = None,
     ) -> Tensor:
         if self.use_flash_attn:
-            x = _dispatch_flash_attn(q, k, v, cu_seqlens=cu_seqlens, cu_seqlens_q=cu_seqlens_q,
-                cu_seqlens_k=cu_seqlens_k, max_seqlen=max_seqlen, max_seqlen_q=max_seqlen_q,
-                max_seqlen_k=max_seqlen_k, dropout_p=self.attn_drop.p if self.training else 0.0,
-                softmax_scale=self.scale, causal=False)
+            x = _dispatch_flash_attn(
+                q,
+                k,
+                v,
+                cu_seqlens=cu_seqlens,
+                cu_seqlens_q=cu_seqlens_q,
+                cu_seqlens_k=cu_seqlens_k,
+                max_seqlen=max_seqlen,
+                max_seqlen_q=max_seqlen_q,
+                max_seqlen_k=max_seqlen_k,
+                dropout_p=self.attn_drop.p if self.training else 0.0,
+                softmax_scale=self.scale,
+                causal=False,
+            )
             x = x.transpose(1, 2)
         elif self.fast_attn:
             if attn_mask is not None:
                 attn_mask = attn_mask[:, None, None].repeat(1, self.num_heads, n, 1)
-            x = torch.nn.functional.scaled_dot_product_attention(q, k, v, attn_mask=attn_mask, dropout_p=self.attn_drop.p)
+            x = torch.nn.functional.scaled_dot_product_attention(
+                q, k, v, attn_mask=attn_mask, dropout_p=self.attn_drop.p
+            )
         else:
             if attn_mask is not None:
                 raise NotImplementedError
@@ -564,9 +665,15 @@ class Attention(nn.Module):
         return x
 
     def forward(
-        self, x: Tensor, y: Tensor | None = None,
-        cu_seqlens: Tensor | None = None, cu_seqlens_q: Tensor | None = None, cu_seqlens_k: Tensor | None = None,
-        max_seqlen: int | None = None, max_seqlen_q: int | None = None, max_seqlen_k: int | None = None,
+        self,
+        x: Tensor,
+        y: Tensor | None = None,
+        cu_seqlens: Tensor | None = None,
+        cu_seqlens_q: Tensor | None = None,
+        cu_seqlens_k: Tensor | None = None,
+        max_seqlen: int | None = None,
+        max_seqlen_q: int | None = None,
+        max_seqlen_k: int | None = None,
         attn_mask: Tensor | None = None,
     ) -> Tensor:
         orig_shape = x.shape
@@ -574,24 +681,41 @@ class Attention(nn.Module):
         k = self.k(y if y is not None else x)
         v = self.v(y if y is not None else x)
         if not self.use_flash_attn:
-            q = rearrange(q, "b n (h d) -> b h n d", h=self.num_heads)
-            k = rearrange(k, "b n (h d) -> b h n d", h=self.num_heads)
-            v = rearrange(v, "b n (h d) -> b h n d", h=self.num_heads)
+            q = rearrange(q, 'b n (h d) -> b h n d', h=self.num_heads)
+            k = rearrange(k, 'b n (h d) -> b h n d', h=self.num_heads)
+            v = rearrange(v, 'b n (h d) -> b h n d', h=self.num_heads)
         else:
-            q = rearrange(q, "bn (h d) -> bn h d", h=self.num_heads)
-            k = rearrange(k, "bn (h d) -> bn h d", h=self.num_heads)
-            v = rearrange(v, "bn (h d) -> bn h d", h=self.num_heads)
+            q = rearrange(q, 'bn (h d) -> bn h d', h=self.num_heads)
+            k = rearrange(k, 'bn (h d) -> bn h d', h=self.num_heads)
+            v = rearrange(v, 'bn (h d) -> bn h d', h=self.num_heads)
         q, k = self.q_norm(q), self.k_norm(k)
-        x = self.sdpa(q, k, v, orig_shape[-2], cu_seqlens=cu_seqlens, cu_seqlens_q=cu_seqlens_q,
-            cu_seqlens_k=cu_seqlens_k, max_seqlen=max_seqlen, max_seqlen_q=max_seqlen_q,
-            max_seqlen_k=max_seqlen_k, attn_mask=attn_mask)
+        x = self.sdpa(
+            q,
+            k,
+            v,
+            orig_shape[-2],
+            cu_seqlens=cu_seqlens,
+            cu_seqlens_q=cu_seqlens_q,
+            cu_seqlens_k=cu_seqlens_k,
+            max_seqlen=max_seqlen,
+            max_seqlen_q=max_seqlen_q,
+            max_seqlen_k=max_seqlen_k,
+            attn_mask=attn_mask,
+        )
         x = x.transpose(1, 2).reshape(orig_shape)
         return cast(Tensor, self.proj_drop(self.proj(x)))
 
 
 class Mlp(nn.Module):
-    def __init__(self, in_features: int, hidden_features: int | None = None, out_features: int | None = None,
-                 act_layer: type = nn.GELU, bias: bool = True, drop: float = 0.0):
+    def __init__(
+        self,
+        in_features: int,
+        hidden_features: int | None = None,
+        out_features: int | None = None,
+        act_layer: type = nn.GELU,
+        bias: bool = True,
+        drop: float = 0.0,
+    ):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
@@ -625,47 +749,97 @@ class DropPath(nn.Module):
             return x
         keep = 1 - self.drop_prob
         shape = (x.shape[0],) + (1,) * (x.ndim - 1)
-        return x / keep * (keep + torch.rand(shape, dtype=x.dtype, device=x.device)).floor()
+        return (
+            x
+            / keep
+            * (keep + torch.rand(shape, dtype=x.dtype, device=x.device)).floor()
+        )
 
 
 class Block(nn.Module):
     def __init__(
-        self, dim: int, num_heads: int, mlp_ratio: float = 4.0, qkv_bias: bool = False, qk_norm: bool = False,
-        drop: float = 0.0, attn_drop: float = 0.0, drop_path: float = 0.0, init_values: float | None = None,
-        act_layer: type = nn.GELU, norm_layer: type = nn.LayerNorm, cross_attn: bool = False, use_flash_attn: bool = False,
+        self,
+        dim: int,
+        num_heads: int,
+        mlp_ratio: float = 4.0,
+        qkv_bias: bool = False,
+        qk_norm: bool = False,
+        drop: float = 0.0,
+        attn_drop: float = 0.0,
+        drop_path: float = 0.0,
+        init_values: float | None = None,
+        act_layer: type = nn.GELU,
+        norm_layer: type = nn.LayerNorm,
+        cross_attn: bool = False,
+        use_flash_attn: bool = False,
     ):
         super().__init__()
         self.norm1 = norm_layer(dim)
-        self.attn = Attention(dim, num_heads=num_heads, qkv_bias=qkv_bias, qk_norm=qk_norm, attn_drop=attn_drop,
-                             proj_drop=drop, norm_layer=norm_layer, cross_attn=cross_attn, use_flash_attn=use_flash_attn)
-        self.ls1 = LayerScale(dim, init_values=init_values) if init_values else nn.Identity()
+        self.attn = Attention(
+            dim,
+            num_heads=num_heads,
+            qkv_bias=qkv_bias,
+            qk_norm=qk_norm,
+            attn_drop=attn_drop,
+            proj_drop=drop,
+            norm_layer=norm_layer,
+            cross_attn=cross_attn,
+            use_flash_attn=use_flash_attn,
+        )
+        self.ls1 = (
+            LayerScale(dim, init_values=init_values) if init_values else nn.Identity()
+        )
         self.drop_path = DropPath(drop_path) if drop_path > 0 else nn.Identity()
         self.norm2 = norm_layer(dim)
-        self.mlp = Mlp(dim, hidden_features=int(dim * mlp_ratio), act_layer=act_layer, drop=drop)
-        self.ls2 = LayerScale(dim, init_values=init_values) if init_values else nn.Identity()
+        self.mlp = Mlp(
+            dim, hidden_features=int(dim * mlp_ratio), act_layer=act_layer, drop=drop
+        )
+        self.ls2 = (
+            LayerScale(dim, init_values=init_values) if init_values else nn.Identity()
+        )
 
     def forward(
-        self, x: Tensor, y: Tensor | None = None,
-        cu_seqlens: Tensor | None = None, cu_seqlens_q: Tensor | None = None, cu_seqlens_k: Tensor | None = None,
-        max_seqlen: int | None = None, max_seqlen_q: int | None = None, max_seqlen_k: int | None = None,
+        self,
+        x: Tensor,
+        y: Tensor | None = None,
+        cu_seqlens: Tensor | None = None,
+        cu_seqlens_q: Tensor | None = None,
+        cu_seqlens_k: Tensor | None = None,
+        max_seqlen: int | None = None,
+        max_seqlen_q: int | None = None,
+        max_seqlen_k: int | None = None,
         attn_mask: Tensor | None = None,
     ) -> Tensor:
-        x = x + self.drop_path(self.ls1(self.attn(self.norm1(x), y=y, cu_seqlens=cu_seqlens,
-            cu_seqlens_q=cu_seqlens_q, cu_seqlens_k=cu_seqlens_k, max_seqlen=max_seqlen,
-            max_seqlen_q=max_seqlen_q, max_seqlen_k=max_seqlen_k, attn_mask=attn_mask)))
+        x = x + self.drop_path(
+            self.ls1(
+                self.attn(
+                    self.norm1(x),
+                    y=y,
+                    cu_seqlens=cu_seqlens,
+                    cu_seqlens_q=cu_seqlens_q,
+                    cu_seqlens_k=cu_seqlens_k,
+                    max_seqlen=max_seqlen,
+                    max_seqlen_q=max_seqlen_q,
+                    max_seqlen_k=max_seqlen_k,
+                    attn_mask=attn_mask,
+                )
+            )
+        )
         return cast(Tensor, x + self.drop_path(self.ls2(self.mlp(self.norm2(x)))))
 
     def apply_fsdp(self, **kwargs: Any) -> None:
         from torch.distributed.fsdp import fully_shard
+
         fully_shard(self, **kwargs)
 
     def apply_compile(self) -> None:
-        self.compile(dynamic=False, mode="max-autotune-no-cudagraphs", fullgraph=True)
+        self.compile(dynamic=False, mode='max-autotune-no-cudagraphs', fullgraph=True)
 
 
 # -----------------------------------------------------------------------------
 # Flexi patch embed
 # -----------------------------------------------------------------------------
+
 
 def _to_2tuple(x: Any) -> tuple[int, int]:
     if isinstance(x, (list, tuple)) and len(x) == 2:
@@ -675,65 +849,112 @@ def _to_2tuple(x: Any) -> tuple[int, int]:
 
 class FlexiPatchEmbed(nn.Module):
     def __init__(
-        self, modality_spec: ModalitySpec, patch_size_at_16: int | tuple[int, int],
-        in_chans: int = 3, embedding_size: int = 128, norm_layer: type | None = None,
-        bias: bool = True, interpolation: str = "bicubic", antialias: bool = True,
+        self,
+        modality_spec: ModalitySpec,
+        patch_size_at_16: int | tuple[int, int],
+        in_chans: int = 3,
+        embedding_size: int = 128,
+        norm_layer: type | None = None,
+        bias: bool = True,
+        interpolation: str = 'bicubic',
+        antialias: bool = True,
     ):
         super().__init__()
         self.embedding_size = embedding_size
         self.modality_spec = modality_spec
-        self.patch_size = _to_2tuple(patch_size_at_16 * modality_spec.image_tile_size_factor)
-        self.proj = nn.Conv2d(in_chans, embedding_size, kernel_size=self.patch_size, stride=self.patch_size, bias=bias)
-        self.norm = (norm_layer(embedding_size) if norm_layer else nn.Identity()) if norm_layer else nn.Identity()
+        self.patch_size = _to_2tuple(
+            patch_size_at_16 * modality_spec.image_tile_size_factor
+        )
+        self.proj = nn.Conv2d(
+            in_chans,
+            embedding_size,
+            kernel_size=self.patch_size,
+            stride=self.patch_size,
+            bias=bias,
+        )
+        self.norm = (
+            (norm_layer(embedding_size) if norm_layer else nn.Identity())
+            if norm_layer
+            else nn.Identity()
+        )
         self.interpolation = interpolation
         self.antialias = antialias
 
-    def forward(self, x: Tensor, patch_size: int | tuple[int, int] | None = None) -> Tensor:
+    def forward(
+        self, x: Tensor, patch_size: int | tuple[int, int] | None = None
+    ) -> Tensor:
         batch_size = x.shape[0]
         if x.ndim == 5:
             _, _, _, _, _ = x.shape
-            x = rearrange(x, "b h w t c -> (b t) c h w")
+            x = rearrange(x, 'b h w t c -> (b t) c h w')
         else:
-            x = rearrange(x, "b h w c -> b c h w")
+            x = rearrange(x, 'b h w c -> b c h w')
         if patch_size is None:
             patch_size = self.patch_size
         else:
             if isinstance(patch_size, tuple):
-                patch_size = _to_2tuple(patch_size[0] * self.modality_spec.image_tile_size_factor)
+                patch_size = _to_2tuple(
+                    patch_size[0] * self.modality_spec.image_tile_size_factor
+                )
             else:
-                patch_size = _to_2tuple(patch_size * self.modality_spec.image_tile_size_factor)
+                patch_size = _to_2tuple(
+                    patch_size * self.modality_spec.image_tile_size_factor
+                )
         if patch_size != self.patch_size:
-            new_shape = (x.shape[-2] // patch_size[0] * patch_size[0], x.shape[-1] // patch_size[1] * patch_size[1])
-            x = torch.nn.functional.interpolate(x, size=new_shape, mode=self.interpolation, antialias=self.antialias)
+            new_shape = (
+                x.shape[-2] // patch_size[0] * patch_size[0],
+                x.shape[-1] // patch_size[1] * patch_size[1],
+            )
+            x = torch.nn.functional.interpolate(
+                x, size=new_shape, mode=self.interpolation, antialias=self.antialias
+            )
         x = self.proj(x)
         if x.ndim == 4 and batch_size != x.shape[0]:
             t = x.shape[0] // batch_size
-            x = rearrange(x, "(b t) d h w -> b h w t d", b=batch_size, t=t)
+            x = rearrange(x, '(b t) d h w -> b h w t d', b=batch_size, t=t)
         else:
-            x = rearrange(x, "b d h w -> b h w d")
+            x = rearrange(x, 'b d h w -> b h w d')
         return cast(Tensor, self.norm(x))
 
 
 class FlexiPatchReconstruction(nn.Module):
     def __init__(
-        self, max_patch_size: int | tuple[int, int], out_chans: int = 3, embedding_size: int = 128,
-        norm_layer: type | None = None, bias: bool = True, interpolation: str = "bicubic", antialias: bool = True,
+        self,
+        max_patch_size: int | tuple[int, int],
+        out_chans: int = 3,
+        embedding_size: int = 128,
+        norm_layer: type | None = None,
+        bias: bool = True,
+        interpolation: str = 'bicubic',
+        antialias: bool = True,
     ):
         super().__init__()
         self.embedding_size = embedding_size
         self.max_patch_size = _to_2tuple(max_patch_size)
-        self.proj = nn.ConvTranspose2d(embedding_size, out_chans, kernel_size=self.max_patch_size, stride=self.max_patch_size, bias=bias)
-        self.norm = (norm_layer(embedding_size) if norm_layer else nn.Identity()) if norm_layer else nn.Identity()
+        self.proj = nn.ConvTranspose2d(
+            embedding_size,
+            out_chans,
+            kernel_size=self.max_patch_size,
+            stride=self.max_patch_size,
+            bias=bias,
+        )
+        self.norm = (
+            (norm_layer(embedding_size) if norm_layer else nn.Identity())
+            if norm_layer
+            else nn.Identity()
+        )
         self.interpolation = interpolation
         self.antialias = antialias
 
-    def forward(self, x: Tensor, patch_size: int | tuple[int, int] | None = None) -> Tensor:
+    def forward(
+        self, x: Tensor, patch_size: int | tuple[int, int] | None = None
+    ) -> Tensor:
         if x.ndim == 4:
             b, h, w, _ = x.shape
             t = 1
         else:
             b, h, w, t, _ = x.shape
-            x = rearrange(x, "b h w t d -> (b t) d h w")
+            x = rearrange(x, 'b h w t d -> (b t) d h w')
         if patch_size is None:
             patch_size = self.max_patch_size
         else:
@@ -742,16 +963,18 @@ class FlexiPatchReconstruction(nn.Module):
         if patch_size != self.max_patch_size:
             x = rearrange(
                 x,
-                "b c (h p1) (w p2) -> (b h w) c p1 p2",
+                'b c (h p1) (w p2) -> (b h w) c p1 p2',
                 p1=self.max_patch_size[0],
                 p2=self.max_patch_size[1],
             )
-            x = torch.nn.functional.interpolate(x, patch_size, mode=self.interpolation, antialias=self.antialias)
-            x = rearrange(x, "(b h w) c p1 p2 -> b c (h p1) (w p2)", b=b, h=h, w=w)
+            x = torch.nn.functional.interpolate(
+                x, patch_size, mode=self.interpolation, antialias=self.antialias
+            )
+            x = rearrange(x, '(b h w) c p1 p2 -> b c (h p1) (w p2)', b=b, h=h, w=w)
         if t > 1:
-            x = rearrange(x, "(b t) c h w -> b h w t c", b=b, t=t)
+            x = rearrange(x, '(b t) c h w -> b h w t c', b=b, t=t)
         else:
-            x = rearrange(x, "b c h w -> b h w c")
+            x = rearrange(x, 'b c h w -> b h w c')
         return cast(Tensor, self.norm(x))
 
 
@@ -759,45 +982,62 @@ class FlexiPatchReconstruction(nn.Module):
 # Utils
 # -----------------------------------------------------------------------------
 
-def unpack_encoder_output(output_dict: dict[str, Any]) -> tuple[Any, Any, dict[str, Any]]:
-    latent = output_dict.pop("tokens_and_masks", None)
-    latent_projected_and_pooled = output_dict.pop("project_aggregated", None)
-    output_dict.pop("token_norm_stats", None)
+
+def unpack_encoder_output(
+    output_dict: dict[str, Any],
+) -> tuple[Any, Any, dict[str, Any]]:
+    latent = output_dict.pop('tokens_and_masks', None)
+    latent_projected_and_pooled = output_dict.pop('project_aggregated', None)
+    output_dict.pop('token_norm_stats', None)
     return latent, latent_projected_and_pooled, output_dict
 
 
 def get_cumulative_sequence_lengths(seq_lengths: Tensor) -> Tensor:
-    return torch.cat([
-        torch.tensor([0], dtype=torch.int32, device=seq_lengths.device),
-        torch.cumsum(seq_lengths.masked_select(seq_lengths != 0), 0, dtype=torch.int32),
-    ])
+    return torch.cat(
+        [
+            torch.tensor([0], dtype=torch.int32, device=seq_lengths.device),
+            torch.cumsum(
+                seq_lengths.masked_select(seq_lengths != 0), 0, dtype=torch.int32
+            ),
+        ]
+    )
 
 
 class DistributedMixins:
     def apply_ddp(self, dp_mesh: Any = None, **kwargs: Any) -> None:
         from torch.distributed._composable.replicate import replicate
-        replicate(cast(nn.Module, self), device_mesh=dp_mesh, bucket_cap_mb=100, find_unused_parameters=kwargs.get("find_unused_parameters", True))
+
+        replicate(
+            cast(nn.Module, self),
+            device_mesh=dp_mesh,
+            bucket_cap_mb=100,
+            find_unused_parameters=kwargs.get('find_unused_parameters', True),
+        )
 
 
 # -----------------------------------------------------------------------------
 # TokensAndMasks and flexi_vit helpers
 # -----------------------------------------------------------------------------
 
+
 def get_modalities_to_process(available: list[str], supported: list[str]) -> list[str]:
     return list(set(supported) & set(available))
 
 
-def return_modalities_from_dict(per_modality_input_tokens: dict[str, Tensor]) -> list[str]:
-    return [k for k in per_modality_input_tokens if not k.endswith("_mask")]
+def return_modalities_from_dict(
+    per_modality_input_tokens: dict[str, Tensor],
+) -> list[str]:
+    return [k for k in per_modality_input_tokens if not k.endswith('_mask')]
 
 
 class PoolingType(StrEnum):
-    MAX = "max"
-    MEAN = "mean"
+    MAX = 'max'
+    MEAN = 'mean'
 
 
 class TokensAndMasks(NamedTuple):
     """Per-modality tokens and masks; field names match MaskedOlmoEarthSample."""
+
     sentinel2_l2a: Tensor | None = None
     sentinel2_l2a_mask: Tensor | None = None
     sentinel1: Tensor | None = None
@@ -822,26 +1062,35 @@ class TokensAndMasks(NamedTuple):
     @property
     def modalities(self) -> list[str]:
         return [
-            x for x in self._fields
-            if not x.endswith("_mask") and getattr(self, x) is not None
+            x
+            for x in self._fields
+            if not x.endswith('_mask') and getattr(self, x) is not None
         ]
 
     @staticmethod
     def get_masked_modality_name(modality: str) -> str:
-        return f"{modality}_mask"
+        return f'{modality}_mask'
 
     def as_dict(self, return_none: bool = True) -> dict[str, Any]:
-        return {f: getattr(self, f) for f in self._fields if return_none or getattr(self, f) is not None}
+        return {
+            f: getattr(self, f)
+            for f in self._fields
+            if return_none or getattr(self, f) is not None
+        }
 
     @staticmethod
     def _flatten(x: Tensor) -> Tensor:
-        return rearrange(x, "b ... d -> b (...) d")
+        return rearrange(x, 'b ... d -> b (...) d')
 
     @overload
-    def flatten_tokens_and_masks(self, return_lists: Literal[False] = False) -> tuple[Tensor, Tensor]: ...
+    def flatten_tokens_and_masks(
+        self, return_lists: Literal[False] = False
+    ) -> tuple[Tensor, Tensor]: ...
 
     @overload
-    def flatten_tokens_and_masks(self, return_lists: Literal[True]) -> tuple[list[Tensor], list[Tensor]]: ...
+    def flatten_tokens_and_masks(
+        self, return_lists: Literal[True]
+    ) -> tuple[list[Tensor], list[Tensor]]: ...
 
     def flatten_tokens_and_masks(
         self, return_lists: bool = False
@@ -868,16 +1117,23 @@ class TokensAndMasks(NamedTuple):
         mask = (mask == MaskValue.ONLINE_ENCODER.value).long()
         x_for_pooling = x * mask.unsqueeze(-1)
         if pooling_type == PoolingType.MAX:
-            x_for_pooling = x_for_pooling.masked_fill(~mask.bool().unsqueeze(-1), -float("inf"))
+            x_for_pooling = x_for_pooling.masked_fill(
+                ~mask.bool().unsqueeze(-1), -float('inf')
+            )
             return x_for_pooling.max(dim=1).values
         num_encoded = torch.sum(mask, -1, keepdim=True)
         if (num_encoded == 0).any():
-            raise ValueError("num_encoded_tokens is 0 for some samples")
+            raise ValueError('num_encoded_tokens is 0 for some samples')
         return x_for_pooling.sum(dim=1) / num_encoded
 
 
 class ProjectAndAggregate(nn.Module):
-    def __init__(self, embedding_size: int, num_layers: int = 1, aggregate_then_project: bool = True):
+    def __init__(
+        self,
+        embedding_size: int,
+        num_layers: int = 1,
+        aggregate_then_project: bool = True,
+    ):
         super().__init__()
         layers: list[nn.Module] = [nn.Linear(embedding_size, embedding_size)]
         for _ in range(1, num_layers):
@@ -889,15 +1145,16 @@ class ProjectAndAggregate(nn.Module):
         if isinstance(x, TokensAndMasks):
             pooled = x.pool_unmasked_tokens(PoolingType.MEAN, spatial_pooling=False)
         elif isinstance(x, Tensor):
-            pooled = reduce(x, "b ... d -> b d", "mean")
+            pooled = reduce(x, 'b ... d -> b d', 'mean')
         else:
-            raise ValueError(f"Invalid type: {type(x)}")
+            raise ValueError(f'Invalid type: {type(x)}')
         return cast(Tensor, self.projection(pooled))
 
 
 # -----------------------------------------------------------------------------
 # MultiModalPatchEmbeddings (used by Encoder)
 # -----------------------------------------------------------------------------
+
 
 class MultiModalPatchEmbeddings(nn.Module):
     def __init__(
@@ -917,33 +1174,48 @@ class MultiModalPatchEmbeddings(nn.Module):
             spec = Modality.get(modality)
             bandset_indices = self.tokenization_config.get_bandset_indices(modality)
             if not spec.is_spatial:
-                self.per_modality_embeddings[modality] = nn.ModuleDict({
-                    f"{modality}__{idx}": nn.Linear(len(channel_idxs), embedding_size)
-                    for idx, channel_idxs in enumerate(bandset_indices)
-                })
+                self.per_modality_embeddings[modality] = nn.ModuleDict(
+                    {
+                        f'{modality}__{idx}': nn.Linear(
+                            len(channel_idxs), embedding_size
+                        )
+                        for idx, channel_idxs in enumerate(bandset_indices)
+                    }
+                )
             else:
-                self.per_modality_embeddings[modality] = nn.ModuleDict({
-                    f"{modality}__{idx}": FlexiPatchEmbed(
-                        modality_spec=spec,
-                        patch_size_at_16=max_patch_size,
-                        in_chans=len(channel_idxs),
-                        embedding_size=embedding_size,
-                    )
-                    for idx, channel_idxs in enumerate(bandset_indices)
-                })
+                self.per_modality_embeddings[modality] = nn.ModuleDict(
+                    {
+                        f'{modality}__{idx}': FlexiPatchEmbed(
+                            modality_spec=spec,
+                            patch_size_at_16=max_patch_size,
+                            in_chans=len(channel_idxs),
+                            embedding_size=embedding_size,
+                        )
+                        for idx, channel_idxs in enumerate(bandset_indices)
+                    }
+                )
         for modality in supported_modality_names:
-            for idx, channel_idxs in enumerate(self.tokenization_config.get_bandset_indices(modality)):
-                name = f"{modality}__{idx}_buffer"
-                self.register_buffer(name, torch.tensor(channel_idxs, dtype=torch.long), persistent=False)
+            for idx, channel_idxs in enumerate(
+                self.tokenization_config.get_bandset_indices(modality)
+            ):
+                name = f'{modality}__{idx}_buffer'
+                self.register_buffer(
+                    name, torch.tensor(channel_idxs, dtype=torch.long), persistent=False
+                )
 
     def _get_embedding_name(self, modality: str, idx: int) -> str:
-        return f"{modality}__{idx}"
+        return f'{modality}__{idx}'
 
     def forward(
-        self, input_data: MaskedOlmoEarthSample, patch_size: int, fast_pass: bool = False
+        self,
+        input_data: MaskedOlmoEarthSample,
+        patch_size: int,
+        fast_pass: bool = False,
     ) -> dict[str, Tensor]:
         output_dict: dict[str, Tensor] = {}
-        modalities_to_process = get_modalities_to_process(input_data.modalities, self.supported_modality_names)
+        modalities_to_process = get_modalities_to_process(
+            input_data.modalities, self.supported_modality_names
+        )
         for modality in modalities_to_process:
             mask_name = input_data.get_masked_modality_name(modality)
             modality_mask = getattr(input_data, mask_name)
@@ -954,8 +1226,10 @@ class MultiModalPatchEmbeddings(nn.Module):
             num_band_sets = self.tokenization_config.get_num_bandsets(modality)
             modality_tokens_list, modality_masks_list = [], []
             for idx in range(num_band_sets):
-                buffer_name = f"{modality}__{idx}_buffer"
-                patchified = torch.index_select(modality_data, -1, getattr(self, buffer_name))
+                buffer_name = f'{modality}__{idx}_buffer'
+                patchified = torch.index_select(
+                    modality_data, -1, getattr(self, buffer_name)
+                )
                 emb_mod = cast(nn.ModuleDict, self.per_modality_embeddings[modality])[
                     self._get_embedding_name(modality, idx)
                 ]
@@ -964,7 +1238,9 @@ class MultiModalPatchEmbeddings(nn.Module):
                 else:
                     patchified = emb_mod(patchified)
                 modality_tokens_list.append(patchified)
-                modality_masks_list.append(modality_mask[..., idx] if modality_mask.ndim > 2 else modality_mask)
+                modality_masks_list.append(
+                    modality_mask[..., idx] if modality_mask.ndim > 2 else modality_mask
+                )
             output_dict[modality] = torch.stack(modality_tokens_list, dim=-2)
             output_dict[mask_name] = torch.stack(modality_masks_list, dim=-1)
         return output_dict
@@ -973,6 +1249,7 @@ class MultiModalPatchEmbeddings(nn.Module):
 # -----------------------------------------------------------------------------
 # Encoder and Predictor (minimal for build + load_state_dict)
 # -----------------------------------------------------------------------------
+
 
 class Encoder(nn.Module):
     def __init__(
@@ -1015,23 +1292,41 @@ class Encoder(nn.Module):
             aggregate_then_project=aggregate_then_project,
         )
         self.norm = nn.LayerNorm(embedding_size)
-        self.blocks = nn.ModuleList([
-            Block(embedding_size, num_heads, mlp_ratio=mlp_ratio, drop_path=drop_path, qk_norm=qk_norm, use_flash_attn=use_flash_attn)
-            for _ in range(depth)
-        ])
-        self.composite_encodings = None  # Optional CompositeEncodings; encoder can work without for loading
+        self.blocks = nn.ModuleList(
+            [
+                Block(
+                    embedding_size,
+                    num_heads,
+                    mlp_ratio=mlp_ratio,
+                    drop_path=drop_path,
+                    qk_norm=qk_norm,
+                    use_flash_attn=use_flash_attn,
+                )
+                for _ in range(depth)
+            ]
+        )
+        self.composite_encodings = (
+            None  # Optional CompositeEncodings; encoder can work without for loading
+        )
         if frozen_patch_embeddings:
             for p in self.patch_embeddings.parameters():
                 p.requires_grad = False
 
     def forward(
-        self, x: MaskedOlmoEarthSample, patch_size: int, input_res: int = BASE_GSD, **kwargs: Any
+        self,
+        x: MaskedOlmoEarthSample,
+        patch_size: int,
+        input_res: int = BASE_GSD,
+        **kwargs: Any,
     ) -> dict[str, Any]:
         patchified = self.patch_embeddings(x, patch_size)
         mods = return_modalities_from_dict(patchified)
-        tokens_list = [rearrange(patchified[m], "b ... d -> b (...) d") for m in mods]
+        tokens_list = [rearrange(patchified[m], 'b ... d -> b (...) d') for m in mods]
         masks_list = [
-            rearrange(patchified[MaskedOlmoEarthSample.get_masked_modality_name(m)], "b ... -> b (...)")
+            rearrange(
+                patchified[MaskedOlmoEarthSample.get_masked_modality_name(m)],
+                'b ... -> b (...)',
+            )
             for m in mods
         ]
         tokens = torch.cat(tokens_list, dim=1)
@@ -1046,8 +1341,8 @@ class Encoder(nn.Module):
             out_dict[MaskedOlmoEarthSample.get_masked_modality_name(m)] = masks_list[i]
             offset += n
         out = TokensAndMasks(**{f: out_dict.get(f) for f in TokensAndMasks._fields})
-        output_dict: dict[str, Any] = {"tokens_and_masks": out}
-        output_dict["project_aggregated"] = self.project_and_aggregate(out)
+        output_dict: dict[str, Any] = {'tokens_and_masks': out}
+        output_dict['project_aggregated'] = self.project_and_aggregate(out)
         return output_dict
 
 
@@ -1074,19 +1369,38 @@ class Predictor(nn.Module):
         self.tokenization_config = tokenization_config or TokenizationConfig()
         self.encoder_embedding_size = encoder_embedding_size
         self.output_embedding_size = output_embedding_size or encoder_embedding_size
-        self.encoder_to_decoder_embed = nn.Linear(encoder_embedding_size, decoder_embedding_size, bias=True)
-        self.to_output_embed = nn.Linear(decoder_embedding_size, self.output_embedding_size, bias=True)
+        self.encoder_to_decoder_embed = nn.Linear(
+            encoder_embedding_size, decoder_embedding_size, bias=True
+        )
+        self.to_output_embed = nn.Linear(
+            decoder_embedding_size, self.output_embedding_size, bias=True
+        )
         self.mask_token = nn.Parameter(torch.zeros(decoder_embedding_size))
         self.input_norm = nn.LayerNorm(encoder_embedding_size)
         self.norm = nn.LayerNorm(decoder_embedding_size)
-        self.blocks = nn.ModuleList([
-            Block(decoder_embedding_size, num_heads, mlp_ratio=mlp_ratio, drop_path=drop_path, cross_attn=True, use_flash_attn=use_flash_attn, qk_norm=qk_norm)
-            for _ in range(depth)
-        ])
+        self.blocks = nn.ModuleList(
+            [
+                Block(
+                    decoder_embedding_size,
+                    num_heads,
+                    mlp_ratio=mlp_ratio,
+                    drop_path=drop_path,
+                    cross_attn=True,
+                    use_flash_attn=use_flash_attn,
+                    qk_norm=qk_norm,
+                )
+                for _ in range(depth)
+            ]
+        )
         self.composite_encodings = None
 
     def forward(
-        self, x: TokensAndMasks, timestamps: Tensor, patch_size: int, input_res: int = BASE_GSD, **kwargs: Any
+        self,
+        x: TokensAndMasks,
+        timestamps: Tensor,
+        patch_size: int,
+        input_res: int = BASE_GSD,
+        **kwargs: Any,
     ) -> TokensAndMasks:
         return x
 
@@ -1094,6 +1408,7 @@ class Predictor(nn.Module):
 # -----------------------------------------------------------------------------
 # Config dataclasses and LatentMIM (Encoder/Predictor built from config)
 # -----------------------------------------------------------------------------
+
 
 def _register_config(cls: type) -> type:
     _CONFIG_CLASS_MAP[cls.__name__] = cls
@@ -1129,10 +1444,10 @@ class EncoderConfig(_StandaloneConfig):
 
     def build(self) -> Encoder:
         kwargs = self.as_dict(exclude_none=True, recurse=False)
-        kwargs.pop("supported_modality_names")
-        kwargs["supported_modalities"] = self.supported_modalities
-        kwargs.pop("tokenization_config", None)
-        kwargs["tokenization_config"] = self.tokenization_config or TokenizationConfig()
+        kwargs.pop('supported_modality_names')
+        kwargs['supported_modalities'] = self.supported_modalities
+        kwargs.pop('tokenization_config', None)
+        kwargs['tokenization_config'] = self.tokenization_config or TokenizationConfig()
         return Encoder(**kwargs)
 
 
@@ -1160,9 +1475,9 @@ class PredictorConfig(_StandaloneConfig):
 
     def build(self) -> Predictor:
         kwargs = self.as_dict(exclude_none=True, recurse=False)
-        kwargs.pop("supported_modality_names")
-        kwargs["supported_modalities"] = self.supported_modalities
-        kwargs["tokenization_config"] = self.tokenization_config or TokenizationConfig()
+        kwargs.pop('supported_modality_names')
+        kwargs['supported_modalities'] = self.supported_modalities
+        kwargs['tokenization_config'] = self.tokenization_config or TokenizationConfig()
         return Predictor(**kwargs)
 
 
@@ -1174,18 +1489,33 @@ class LatentMIMConfig(_StandaloneConfig):
     reconstructor_config: Any = None
 
     def validate(self) -> None:
-        if self.encoder_config.supported_modalities != self.decoder_config.supported_modalities:
-            raise ValueError("Encoder and decoder must support the same modalities")
-        if self.encoder_config.max_sequence_length != self.decoder_config.max_sequence_length:
-            raise ValueError("Encoder and decoder must have the same max_sequence_length")
-        if self.encoder_config.embedding_size != self.decoder_config.encoder_embedding_size:
-            raise ValueError("Encoder embedding_size must match decoder encoder_embedding_size")
+        if (
+            self.encoder_config.supported_modalities
+            != self.decoder_config.supported_modalities
+        ):
+            raise ValueError('Encoder and decoder must support the same modalities')
+        if (
+            self.encoder_config.max_sequence_length
+            != self.decoder_config.max_sequence_length
+        ):
+            raise ValueError(
+                'Encoder and decoder must have the same max_sequence_length'
+            )
+        if (
+            self.encoder_config.embedding_size
+            != self.decoder_config.encoder_embedding_size
+        ):
+            raise ValueError(
+                'Encoder embedding_size must match decoder encoder_embedding_size'
+            )
 
     def build(self) -> LatentMIM:
         self.validate()
         encoder = self.encoder_config.build()
         decoder = self.decoder_config.build()
-        reconstructor = self.reconstructor_config.build() if self.reconstructor_config else None
+        reconstructor = (
+            self.reconstructor_config.build() if self.reconstructor_config else None
+        )
         return LatentMIM(encoder=encoder, decoder=decoder, reconstructor=reconstructor)
 
 
@@ -1208,16 +1538,30 @@ class LatentMIM(nn.Module, DistributedMixins):
 
     def forward(
         self, x: MaskedOlmoEarthSample, patch_size: int
-    ) -> tuple[TokensAndMasks, TokensAndMasks, Tensor, TokensAndMasks | None, dict[str, Any]]:
+    ) -> tuple[
+        TokensAndMasks, TokensAndMasks, Tensor, TokensAndMasks | None, dict[str, Any]
+    ]:
         output_dict = self.encoder(x, patch_size=patch_size)  # type: ignore[call-arg]
-        token_norm_stats = output_dict.pop("token_norm_stats", None)
-        latent, latent_projected_and_pooled, decoder_kwargs = unpack_encoder_output(output_dict)
-        extra_metrics = {"token_norm_stats": token_norm_stats} if token_norm_stats else {}
+        token_norm_stats = output_dict.pop('token_norm_stats', None)
+        latent, latent_projected_and_pooled, decoder_kwargs = unpack_encoder_output(
+            output_dict
+        )
+        extra_metrics = (
+            {'token_norm_stats': token_norm_stats} if token_norm_stats else {}
+        )
         reconstructed = None
         if self.reconstructor is not None:
             reconstructed = self.reconstructor(latent, x.timestamps, patch_size)  # type: ignore[attr-defined]
-        decoded = self.decoder(latent, timestamps=x.timestamps, patch_size=patch_size, **decoder_kwargs)  # type: ignore[call-arg]
-        return latent, decoded, latent_projected_and_pooled, reconstructed, extra_metrics
+        decoded = self.decoder(
+            latent, timestamps=x.timestamps, patch_size=patch_size, **decoder_kwargs
+        )  # type: ignore[call-arg]
+        return (
+            latent,
+            decoded,
+            latent_projected_and_pooled,
+            reconstructed,
+            extra_metrics,
+        )
 
 
 # -----------------------------------------------------------------------------
@@ -1225,41 +1569,41 @@ class LatentMIM(nn.Module, DistributedMixins):
 # -----------------------------------------------------------------------------
 
 MODEL_SIZE_CONFIGS = {
-    "nano_shallow_decoder": {
-        "decoder_depth": 4,
-        "encoder_embedding_size": 128,
-        "decoder_embedding_size": 128,
-        "encoder_depth": 4,
-        "encoder_num_heads": 8,
-        "decoder_num_heads": 8,
-        "mlp_ratio": 4.0,
+    'nano_shallow_decoder': {
+        'decoder_depth': 4,
+        'encoder_embedding_size': 128,
+        'decoder_embedding_size': 128,
+        'encoder_depth': 4,
+        'encoder_num_heads': 8,
+        'decoder_num_heads': 8,
+        'mlp_ratio': 4.0,
     },
-    "tiny_shallow_decoder": {
-        "decoder_depth": 4,
-        "encoder_embedding_size": 192,
-        "decoder_embedding_size": 192,
-        "encoder_depth": 12,
-        "encoder_num_heads": 3,
-        "decoder_num_heads": 3,
-        "mlp_ratio": 4.0,
+    'tiny_shallow_decoder': {
+        'decoder_depth': 4,
+        'encoder_embedding_size': 192,
+        'decoder_embedding_size': 192,
+        'encoder_depth': 12,
+        'encoder_num_heads': 3,
+        'decoder_num_heads': 3,
+        'mlp_ratio': 4.0,
     },
-    "base_shallow_decoder": {
-        "decoder_depth": 4,
-        "encoder_embedding_size": 768,
-        "decoder_embedding_size": 768,
-        "encoder_depth": 12,
-        "encoder_num_heads": 12,
-        "decoder_num_heads": 12,
-        "mlp_ratio": 4.0,
+    'base_shallow_decoder': {
+        'decoder_depth': 4,
+        'encoder_embedding_size': 768,
+        'decoder_embedding_size': 768,
+        'encoder_depth': 12,
+        'encoder_num_heads': 12,
+        'decoder_num_heads': 12,
+        'mlp_ratio': 4.0,
     },
-    "large_shallow_decoder": {
-        "decoder_depth": 4,
-        "encoder_embedding_size": 1024,
-        "decoder_embedding_size": 1024,
-        "encoder_depth": 24,
-        "encoder_num_heads": 16,
-        "decoder_num_heads": 16,
-        "mlp_ratio": 4.0,
+    'large_shallow_decoder': {
+        'decoder_depth': 4,
+        'encoder_embedding_size': 1024,
+        'decoder_embedding_size': 1024,
+        'encoder_depth': 24,
+        'encoder_num_heads': 16,
+        'decoder_num_heads': 16,
+        'mlp_ratio': 4.0,
     },
 }
 
@@ -1285,39 +1629,43 @@ class OlmoEarthPretrain_v1(nn.Module):
 
     def __init__(
         self,
-        model_size: str = "nano",
+        model_size: str = 'nano',
         supported_modality_names: list[str] | None = None,
         max_patch_size: int = 8,
         max_sequence_length: int = 12,
         drop_path: float = 0.1,
     ) -> None:
         super().__init__()
-        config_key = f"{model_size}_shallow_decoder"
+        config_key = f'{model_size}_shallow_decoder'
         if config_key not in MODEL_SIZE_CONFIGS:
-            raise ValueError(f"Invalid model_size: {model_size}. Must be one of nano, tiny, base, large.")
+            raise ValueError(
+                f'Invalid model_size: {model_size}. Must be one of nano, tiny, base, large.'
+            )
         if supported_modality_names is None:
             supported_modality_names = DEFAULT_MODALITIES
         cfg = MODEL_SIZE_CONFIGS[config_key]
         encoder_config = EncoderConfig(
-            embedding_size=int(cfg["encoder_embedding_size"]),
-            num_heads=int(cfg["encoder_num_heads"]),
-            depth=int(cfg["encoder_depth"]),
-            mlp_ratio=float(cfg["mlp_ratio"]),
+            embedding_size=int(cfg['encoder_embedding_size']),
+            num_heads=int(cfg['encoder_num_heads']),
+            depth=int(cfg['encoder_depth']),
+            mlp_ratio=float(cfg['mlp_ratio']),
             supported_modality_names=supported_modality_names,
             max_patch_size=max_patch_size,
             drop_path=drop_path,
             max_sequence_length=max_sequence_length,
         )
         decoder_config = PredictorConfig(
-            encoder_embedding_size=int(cfg["encoder_embedding_size"]),
-            decoder_embedding_size=int(cfg["decoder_embedding_size"]),
-            depth=int(cfg["decoder_depth"]),
-            mlp_ratio=float(cfg["mlp_ratio"]),
-            num_heads=int(cfg["decoder_num_heads"]),
+            encoder_embedding_size=int(cfg['encoder_embedding_size']),
+            decoder_embedding_size=int(cfg['decoder_embedding_size']),
+            depth=int(cfg['decoder_depth']),
+            mlp_ratio=float(cfg['mlp_ratio']),
+            num_heads=int(cfg['decoder_num_heads']),
             supported_modality_names=supported_modality_names,
             max_sequence_length=max_sequence_length,
         )
-        model_config = LatentMIMConfig(encoder_config=encoder_config, decoder_config=decoder_config)
+        model_config = LatentMIMConfig(
+            encoder_config=encoder_config, decoder_config=decoder_config
+        )
         self.model = model_config.build()
 
     def forward(self, *args: Any, **kwargs: Any) -> Any:
@@ -1334,10 +1682,13 @@ class OlmoEarthPretrain_v1(nn.Module):
 # Normalizer (data preprocessing)
 # -----------------------------------------------------------------------------
 
+
 def _load_olmoearth_norm_config() -> dict[str, dict[str, Any]]:
     """Load computed normalization config from package data."""
-    with files("torchgeo").joinpath("models", "olmoearth_computed_norm.json").open() as f:
-        return cast("dict[str, dict[str, Any]]", json.load(f))
+    with (
+        files('torchgeo').joinpath('models', 'olmoearth_computed_norm.json').open() as f
+    ):
+        return cast('dict[str, dict[str, Any]]', json.load(f))
 
 
 class Normalizer:
@@ -1356,10 +1707,10 @@ class Normalizer:
             if band not in modality_norm:
                 raise ValueError(
                     f"Band '{band}' not in norm config for '{modality.name}'. "
-                    f"Available: {list(modality_norm.keys())}"
+                    f'Available: {list(modality_norm.keys())}'
                 )
-            mean_vals.append(modality_norm[band]["mean"])
-            std_vals.append(modality_norm[band]["std"])
+            mean_vals.append(modality_norm[band]['mean'])
+            std_vals.append(modality_norm[band]['std'])
         min_vals = np.array(mean_vals) - self.std_multiplier * np.array(std_vals)
         max_vals = np.array(mean_vals) + self.std_multiplier * np.array(std_vals)
         return (data - min_vals) / (max_vals - min_vals)
@@ -1372,34 +1723,34 @@ class Normalizer:
 # No-op transforms for OlmoEarth; use Normalizer for modality-specific preprocessing.
 _olmoearth_transforms = nn.Identity()
 
+
 class OlmoEarthPretrainV1_Weights(WeightsEnum):  # type: ignore[misc]
     """OlmoEarth v1 pre-trained weights from Hugging Face (allenai/OlmoEarth-v1-*)."""
 
     NANO = Weights(
-        url="https://huggingface.co/allenai/OlmoEarth-v1-Nano/resolve/main/weights.pth",
+        url='https://huggingface.co/allenai/OlmoEarth-v1-Nano/resolve/main/weights.pth',
         transforms=_olmoearth_transforms,
-        meta={"model_size": "nano", "repo": "allenai/OlmoEarth-v1-Nano"},
+        meta={'model_size': 'nano', 'repo': 'allenai/OlmoEarth-v1-Nano'},
     )
     TINY = Weights(
-        url="https://huggingface.co/allenai/OlmoEarth-v1-Tiny/resolve/main/weights.pth",
+        url='https://huggingface.co/allenai/OlmoEarth-v1-Tiny/resolve/main/weights.pth',
         transforms=_olmoearth_transforms,
-        meta={"model_size": "tiny", "repo": "allenai/OlmoEarth-v1-Tiny"},
+        meta={'model_size': 'tiny', 'repo': 'allenai/OlmoEarth-v1-Tiny'},
     )
     BASE = Weights(
-        url="https://huggingface.co/allenai/OlmoEarth-v1-Base/resolve/main/weights.pth",
+        url='https://huggingface.co/allenai/OlmoEarth-v1-Base/resolve/main/weights.pth',
         transforms=_olmoearth_transforms,
-        meta={"model_size": "base", "repo": "allenai/OlmoEarth-v1-Base"},
+        meta={'model_size': 'base', 'repo': 'allenai/OlmoEarth-v1-Base'},
     )
     LARGE = Weights(
-        url="https://huggingface.co/allenai/OlmoEarth-v1-Large/resolve/main/weights.pth",
+        url='https://huggingface.co/allenai/OlmoEarth-v1-Large/resolve/main/weights.pth',
         transforms=_olmoearth_transforms,
-        meta={"model_size": "large", "repo": "allenai/OlmoEarth-v1-Large"},
+        meta={'model_size': 'large', 'repo': 'allenai/OlmoEarth-v1-Large'},
     )
 
 
 def olmoearth_pretrain_v1(
-    weights: OlmoEarthPretrainV1_Weights | None = None,
-    **kwargs: Any,
+    weights: OlmoEarthPretrainV1_Weights | None = None, **kwargs: Any
 ) -> OlmoEarthPretrain_v1:
     """OlmoEarth Pretrain v1 model.
 
@@ -1410,26 +1761,26 @@ def olmoearth_pretrain_v1(
     Returns:
         OlmoEarthPretrain_v1 instance.
     """
-    model_size = kwargs.pop("model_size", "nano")
+    model_size = kwargs.pop('model_size', 'nano')
     if weights is not None:
-        model_size = weights.meta.get("model_size", model_size)
-        kwargs["model_size"] = model_size
+        model_size = weights.meta.get('model_size', model_size)
+        kwargs['model_size'] = model_size
     model = OlmoEarthPretrain_v1(model_size=model_size, **kwargs)
     if weights is not None:
         state_dict = weights.get_state_dict(progress=True)
-        if not any(k.startswith("model.") for k in state_dict):
-            state_dict = {f"model.{k}": v for k, v in state_dict.items()}
+        if not any(k.startswith('model.') for k in state_dict):
+            state_dict = {f'model.{k}': v for k, v in state_dict.items()}
         model.load_state_dict(state_dict, strict=False)
     return model
 
 
 __all__ = [
-    "MaskValue",
-    "MaskedOlmoEarthSample",
-    "Modality",
-    "ModalitySpec",
-    "Normalizer",
-    "OlmoEarthPretrainV1_Weights",
-    "OlmoEarthPretrain_v1",
-    "olmoearth_pretrain_v1",
+    'MaskValue',
+    'MaskedOlmoEarthSample',
+    'Modality',
+    'ModalitySpec',
+    'Normalizer',
+    'OlmoEarthPretrainV1_Weights',
+    'OlmoEarthPretrain_v1',
+    'olmoearth_pretrain_v1',
 ]
