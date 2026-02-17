@@ -26,9 +26,9 @@ from .fcn import FCN
 from .fcsiam import FCSiamConc, FCSiamDiff
 from .ltae import LTAE
 from .olmoearth_pretrain_v1 import (
-    OlmoEarthPretrainV1_Weights,
-    OlmoEarthPretrain_v1,
     Normalizer,
+    OlmoEarthPretrain_v1,
+    OlmoEarthPretrainV1_Weights,
     olmoearth_pretrain_v1,
 )
 from .panopticon import Panopticon, Panopticon_Weights, panopticon_vitb14
@@ -99,6 +99,9 @@ __all__ = (
     'FCSiamConc',
     'FCSiamDiff',
     'FarSeg',
+    'Normalizer',
+    'OlmoEarthPretrainV1_Weights',
+    'OlmoEarthPretrain_v1',
     'Panopticon',
     'Panopticon_Weights',
     'Presto',
@@ -138,9 +141,6 @@ __all__ = (
     'get_model_weights',
     'get_weight',
     'list_models',
-    'Normalizer',
-    'OlmoEarthPretrainV1_Weights',
-    'OlmoEarthPretrain_v1',
     'olmoearth_pretrain_v1',
     'panopticon_vitb14',
     'presto',

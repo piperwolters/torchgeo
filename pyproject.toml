@@ -349,6 +349,7 @@ ignore = ["ANN401"]
 [tool.ruff.lint.per-file-ignores]
 "docs/**" = ["ANN", "D"]
 "tests/**" = ["D"]
+"torchgeo/models/olmoearth_pretrain_v1.py" = ["ANN204", "D"]
 
 [tool.ruff.lint.isort]
 split-on-trailing-comma = false

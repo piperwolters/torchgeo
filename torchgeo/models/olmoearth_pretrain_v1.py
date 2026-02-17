@@ -17,12 +17,12 @@ from copy import deepcopy
 from dataclasses import dataclass, field, fields, is_dataclass
 from enum import Enum, StrEnum
 from importlib.resources import files
-from typing import Any, Callable, Literal, NamedTuple, Optional, TypeVar, Union, cast, overload
+from typing import Any, Literal, NamedTuple, TypeVar, cast, overload
 
 import numpy as np
 import torch
 import torch.nn as nn
-from einops import rearrange, reduce, repeat
+from einops import rearrange, reduce
 from torch import Tensor
 from torchvision.models._api import Weights, WeightsEnum
 
@@ -77,7 +77,7 @@ class ModalitySpec:
 
     @property
     def band_order(self) -> list[str]:
-        return sum((list(bs.bands) for bs in self.band_sets), [])
+        return [b for bs in self.band_sets for b in bs.bands]
 
     @property
     def num_band_sets(self) -> int:
@@ -233,7 +233,7 @@ def get_modality_specs_from_names(names: list[str]) -> list[ModalitySpec]:
 # Data types
 # -----------------------------------------------------------------------------
 
-ArrayTensor = Union[np.ndarray, torch.Tensor]
+ArrayTensor = np.ndarray | torch.Tensor
 
 
 class MaskValue(Enum):
@@ -270,10 +270,10 @@ class MaskedOlmoEarthSample(NamedTuple):
 
     def as_dict(self, return_none: bool = True) -> dict[str, Any]:
         d = {}
-        for field in self._fields:
-            val = getattr(self, field)
+        for fld in self._fields:
+            val = getattr(self, fld)
             if return_none or val is not None:
-                d[field] = val
+                d[fld] = val
         return d
 
     @property
@@ -376,13 +376,13 @@ class _StandaloneConfig:
                 result = {}
                 if include_class_name:
                     result[CLASS_NAME_FIELD] = f"{obj.__class__.__module__}.{obj.__class__.__name__}"
-                for field in fields(obj):
-                    if exclude_private_fields and field.name.startswith("_"):
+                for fld in fields(obj):
+                    if exclude_private_fields and fld.name.startswith("_"):
                         continue
-                    v = getattr(obj, field.name)
+                    v = getattr(obj, fld.name)
                     if exclude_none and v is None:
                         continue
-                    result[field.name] = convert(v) if recurse else v
+                    result[fld.name] = convert(v) if recurse else v
                 return result
             if isinstance(obj, dict):
                 return {k: convert(v) if recurse else v for k, v in obj.items()}
@@ -691,7 +691,7 @@ class FlexiPatchEmbed(nn.Module):
     def forward(self, x: Tensor, patch_size: int | tuple[int, int] | None = None) -> Tensor:
         batch_size = x.shape[0]
         if x.ndim == 5:
-            b, h, w, t, c = x.shape
+            _, _, _, _, _ = x.shape
             x = rearrange(x, "b h w t c -> (b t) c h w")
         else:
             x = rearrange(x, "b h w c -> b c h w")
@@ -707,7 +707,6 @@ class FlexiPatchEmbed(nn.Module):
             x = torch.nn.functional.interpolate(x, size=new_shape, mode=self.interpolation, antialias=self.antialias)
         x = self.proj(x)
         if x.ndim == 4 and batch_size != x.shape[0]:
-            _, d, h, w = x.shape
             t = x.shape[0] // batch_size
             x = rearrange(x, "(b t) d h w -> b h w t d", b=batch_size, t=t)
         else:
@@ -730,10 +729,10 @@ class FlexiPatchReconstruction(nn.Module):
 
     def forward(self, x: Tensor, patch_size: int | tuple[int, int] | None = None) -> Tensor:
         if x.ndim == 4:
-            b, h, w, d = x.shape
+            b, h, w, _ = x.shape
             t = 1
         else:
-            b, h, w, t, d = x.shape
+            b, h, w, t, _ = x.shape
             x = rearrange(x, "b h w t d -> (b t) d h w")
         if patch_size is None:
             patch_size = self.max_patch_size
@@ -741,7 +740,12 @@ class FlexiPatchReconstruction(nn.Module):
             patch_size = _to_2tuple(patch_size)
         x = self.proj(x)
         if patch_size != self.max_patch_size:
-            x = rearrange(x, "b c (h p1) (w p2) -> (b h w) c p1 p2", p1=self.max_patch_size[0], p2=self.max_patch_size[1])
+            x = rearrange(
+                x,
+                "b c (h p1) (w p2) -> (b h w) c p1 p2",
+                p1=self.max_patch_size[0],
+                p2=self.max_patch_size[1],
+            )
             x = torch.nn.functional.interpolate(x, patch_size, mode=self.interpolation, antialias=self.antialias)
             x = rearrange(x, "(b h w) c p1 p2 -> b c (h p1) (w p2)", b=b, h=h, w=w)
         if t > 1:
@@ -1123,7 +1127,7 @@ class EncoderConfig(_StandaloneConfig):
     def supported_modalities(self) -> list[ModalitySpec]:
         return get_modality_specs_from_names(self.supported_modality_names)
 
-    def build(self) -> "Encoder":
+    def build(self) -> Encoder:
         kwargs = self.as_dict(exclude_none=True, recurse=False)
         kwargs.pop("supported_modality_names")
         kwargs["supported_modalities"] = self.supported_modalities
@@ -1154,7 +1158,7 @@ class PredictorConfig(_StandaloneConfig):
     def supported_modalities(self) -> list[ModalitySpec]:
         return get_modality_specs_from_names(self.supported_modality_names)
 
-    def build(self) -> "Predictor":
+    def build(self) -> Predictor:
         kwargs = self.as_dict(exclude_none=True, recurse=False)
         kwargs.pop("supported_modality_names")
         kwargs["supported_modalities"] = self.supported_modalities
@@ -1177,7 +1181,7 @@ class LatentMIMConfig(_StandaloneConfig):
         if self.encoder_config.embedding_size != self.decoder_config.encoder_embedding_size:
             raise ValueError("Encoder embedding_size must match decoder encoder_embedding_size")
 
-    def build(self) -> "LatentMIM":
+    def build(self) -> LatentMIM:
         self.validate()
         encoder = self.encoder_config.build()
         decoder = self.decoder_config.build()
@@ -1394,7 +1398,7 @@ class OlmoEarthPretrainV1_Weights(WeightsEnum):  # type: ignore[misc]
 
 
 def olmoearth_pretrain_v1(
-    weights: Optional[OlmoEarthPretrainV1_Weights] = None,
+    weights: OlmoEarthPretrainV1_Weights | None = None,
     **kwargs: Any,
 ) -> OlmoEarthPretrain_v1:
     """OlmoEarth Pretrain v1 model.
@@ -1420,12 +1424,12 @@ def olmoearth_pretrain_v1(
 
 
 __all__ = [
-    "OlmoEarthPretrain_v1",
-    "OlmoEarthPretrainV1_Weights",
-    "olmoearth_pretrain_v1",
-    "Normalizer",
+    "MaskValue",
+    "MaskedOlmoEarthSample",
     "Modality",
     "ModalitySpec",
-    "MaskedOlmoEarthSample",
-    "MaskValue",
+    "Normalizer",
+    "OlmoEarthPretrainV1_Weights",
+    "OlmoEarthPretrain_v1",
+    "olmoearth_pretrain_v1",
 ]
