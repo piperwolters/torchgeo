@@ -17,7 +17,7 @@ from copy import deepcopy
 from dataclasses import dataclass, field, fields, is_dataclass
 from enum import Enum, StrEnum
 from importlib.resources import files
-from typing import Any, Callable, NamedTuple, Optional, TypeVar, Union, cast
+from typing import Any, Callable, Literal, NamedTuple, Optional, TypeVar, Union, cast, overload
 
 import numpy as np
 import torch
@@ -833,6 +833,12 @@ class TokensAndMasks(NamedTuple):
     def _flatten(x: Tensor) -> Tensor:
         return rearrange(x, "b ... d -> b (...) d")
 
+    @overload
+    def flatten_tokens_and_masks(self, return_lists: Literal[False] = False) -> tuple[Tensor, Tensor]: ...
+
+    @overload
+    def flatten_tokens_and_masks(self, return_lists: Literal[True]) -> tuple[list[Tensor], list[Tensor]]: ...
+
     def flatten_tokens_and_masks(
         self, return_lists: bool = False
     ) -> tuple[Tensor, Tensor] | tuple[list[Tensor], list[Tensor]]:
@@ -854,7 +860,7 @@ class TokensAndMasks(NamedTuple):
     def pool_unmasked_tokens(
         self, pooling_type: PoolingType = PoolingType.MAX, spatial_pooling: bool = False
     ) -> Tensor:
-        x, mask = self.flatten_tokens_and_masks()
+        x, mask = self.flatten_tokens_and_masks(return_lists=False)
         mask = (mask == MaskValue.ONLINE_ENCODER.value).long()
         x_for_pooling = x * mask.unsqueeze(-1)
         if pooling_type == PoolingType.MAX:
@@ -1359,23 +1365,30 @@ class Normalizer:
 # Weights and builder (TorchGeo API)
 # -----------------------------------------------------------------------------
 
+# No-op transforms for OlmoEarth; use Normalizer for modality-specific preprocessing.
+_olmoearth_transforms = nn.Identity()
+
 class OlmoEarthPretrainV1_Weights(WeightsEnum):  # type: ignore[misc]
     """OlmoEarth v1 pre-trained weights from Hugging Face (allenai/OlmoEarth-v1-*)."""
 
     NANO = Weights(
         url="https://huggingface.co/allenai/OlmoEarth-v1-Nano/resolve/main/weights.pth",
+        transforms=_olmoearth_transforms,
         meta={"model_size": "nano", "repo": "allenai/OlmoEarth-v1-Nano"},
     )
     TINY = Weights(
         url="https://huggingface.co/allenai/OlmoEarth-v1-Tiny/resolve/main/weights.pth",
+        transforms=_olmoearth_transforms,
         meta={"model_size": "tiny", "repo": "allenai/OlmoEarth-v1-Tiny"},
     )
     BASE = Weights(
         url="https://huggingface.co/allenai/OlmoEarth-v1-Base/resolve/main/weights.pth",
+        transforms=_olmoearth_transforms,
         meta={"model_size": "base", "repo": "allenai/OlmoEarth-v1-Base"},
     )
     LARGE = Weights(
         url="https://huggingface.co/allenai/OlmoEarth-v1-Large/resolve/main/weights.pth",
+        transforms=_olmoearth_transforms,
         meta={"model_size": "large", "repo": "allenai/OlmoEarth-v1-Large"},
     )
 
