@@ -24,22 +24,22 @@ class OlmoEarthPretrainV1_Weights(WeightsEnum):  # type: ignore[misc]
     """
 
     NANO = Weights(
-        url='https://hf.co/allenai/OlmoEarth-v1-Nano/resolve/c48459cd6264704b9d1761a2904c46eb98755fda/weights.pth',
+        url='https://huggingface.co/allenai/OlmoEarth-v1-Nano/resolve/c48459cd6264704b9d1761a2904c46eb98755fda/weights.pth',
         transforms=_olmoearth_transforms,
         meta={'model_size': 'nano', 'repo': 'allenai/OlmoEarth-v1-Nano'},
     )
     TINY = Weights(
-        url='https://huggingface.co/allenai/OlmoEarth-v1-Tiny/resolve/main/weights.pth',
+        url='https://huggingface.co/allenai/OlmoEarth-v1-Tiny/resolve/edd9418badc5a9f769ba1aa622cb6d0af4586f8b/weights.pth',
         transforms=_olmoearth_transforms,
         meta={'model_size': 'tiny', 'repo': 'allenai/OlmoEarth-v1-Tiny'},
     )
     BASE = Weights(
-        url='https://huggingface.co/allenai/OlmoEarth-v1-Base/resolve/main/weights.pth',
+        url='https://huggingface.co/allenai/OlmoEarth-v1-Base/resolve/93589e2dee5b5c95a660d1e9365bc017ea7f35d6/weights.pth',
         transforms=_olmoearth_transforms,
         meta={'model_size': 'base', 'repo': 'allenai/OlmoEarth-v1-Base'},
     )
     LARGE = Weights(
-        url='https://huggingface.co/allenai/OlmoEarth-v1-Large/resolve/main/weights.pth',
+        url='https://huggingface.co/allenai/OlmoEarth-v1-Large/resolve/8cf072c70d4a1c403531ca9a9653bb1f8f60eb83/weights.pth',
         transforms=_olmoearth_transforms,
         meta={'model_size': 'large', 'repo': 'allenai/OlmoEarth-v1-Large'},
     )
