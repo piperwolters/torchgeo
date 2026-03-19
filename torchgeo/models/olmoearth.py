@@ -1,4 +1,4 @@
-# Copyright (c) Microsoft Corporation. All rights reserved.
+# Copyright (c) TorchGeo Contributors. All rights reserved.
 # Licensed under the MIT License.
 
 """Pre-trained OlmoEarth Pretrain v1 models."""
@@ -24,7 +24,7 @@ class OlmoEarthPretrainV1_Weights(WeightsEnum):  # type: ignore[misc]
     """
 
     NANO = Weights(
-        url='https://huggingface.co/allenai/OlmoEarth-v1-Nano/resolve/main/weights.pth',
+        url='https://hf.co/allenai/OlmoEarth-v1-Nano/resolve/c48459cd6264704b9d1761a2904c46eb98755fda/weights.pth',
         transforms=_olmoearth_transforms,
         meta={'model_size': 'nano', 'repo': 'allenai/OlmoEarth-v1-Nano'},
     )
