@@ -1,36 +1,27 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-"""OlmoEarth Pretrain v1 model and data preprocessing.
-
-Uses the ``olmoearth-pretrain-minimal`` optional dependency. Install with
-``pip install torchgeo[models]`` to load pre-trained weights from Hugging Face
-(allenai/OlmoEarth-v1-*).
-"""
-
-from __future__ import annotations
+"""Pre-trained OlmoEarth Pretrain v1 models."""
 
 from typing import Any
 
 import torch.nn as nn
 from torchvision.models._api import Weights, WeightsEnum
 
-from olmoearth_pretrain_minimal import Normalizer, OlmoEarthPretrain_v1
-from olmoearth_pretrain_minimal.olmoearth_pretrain_v1.utils.constants import (
-    Modality,
-    ModalitySpec,
-)
-from olmoearth_pretrain_minimal.olmoearth_pretrain_v1.utils.datatypes import (
-    MaskedOlmoEarthSample,
-    MaskValue,
-)
+from ..datasets.utils import lazy_import
 
-# No-op transforms for OlmoEarth; use Normalizer for modality-specific preprocessing.
 _olmoearth_transforms = nn.Identity()
 
 
 class OlmoEarthPretrainV1_Weights(WeightsEnum):  # type: ignore[misc]
-    """OlmoEarth v1 pre-trained weights from Hugging Face (allenai/OlmoEarth-v1-*)."""
+    """OlmoEarth v1 pre-trained weights.
+
+    If you use this model in your research, please cite the following paper:
+
+    * https://arxiv.org/abs/2506.10890
+
+    .. versionadded:: 0.8
+    """
 
     NANO = Weights(
         url='https://huggingface.co/allenai/OlmoEarth-v1-Nano/resolve/main/weights.pth',
@@ -56,36 +47,41 @@ class OlmoEarthPretrainV1_Weights(WeightsEnum):  # type: ignore[misc]
 
 def olmoearth_pretrain_v1(
     weights: OlmoEarthPretrainV1_Weights | None = None, **kwargs: Any
-) -> OlmoEarthPretrain_v1:
+) -> nn.Module:
     """OlmoEarth Pretrain v1 model.
 
+    If you use this model in your research, please cite the following paper:
+
+    * https://arxiv.org/abs/2506.10890
+
+    This model requires the following additional library to be installed:
+
+    * `olmoearth-pretrain-minimal <https://pypi.org/project/olmoearth-pretrain-minimal/>`_:
+      to load the models.
+
+    .. versionadded:: 0.8
+
     Args:
-        weights: Pre-trained weights. If None, model is randomly initialized.
-        **kwargs: Passed to OlmoEarthPretrain_v1 (e.g. model_size, max_patch_size).
+        weights: Pre-trained weights. If ``None``, model is randomly initialized.
+        **kwargs: Passed to
+            ``olmoearth_pretrain_minimal.OlmoEarthPretrain_v1``
+            (e.g. ``model_size``, ``max_patch_size``).
 
     Returns:
-        OlmoEarthPretrain_v1 instance.
+        An OlmoEarth Pretrain v1 model.
     """
+    olmoearth = lazy_import('olmoearth_pretrain_minimal')
+
     model_size = kwargs.pop('model_size', 'nano')
     if weights is not None:
         model_size = weights.meta.get('model_size', model_size)
         kwargs['model_size'] = model_size
-    model = OlmoEarthPretrain_v1(model_size=model_size, **kwargs)
+    model: nn.Module = olmoearth.OlmoEarthPretrain_v1(
+        model_size=model_size, **kwargs
+    )
     if weights is not None:
         state_dict = weights.get_state_dict(progress=True)
         if not any(k.startswith('model.') for k in state_dict):
             state_dict = {f'model.{k}': v for k, v in state_dict.items()}
         model.load_state_dict(state_dict, strict=False)
     return model
-
-
-__all__ = [
-    'MaskValue',
-    'MaskedOlmoEarthSample',
-    'Modality',
-    'ModalitySpec',
-    'Normalizer',
-    'OlmoEarthPretrainV1_Weights',
-    'OlmoEarthPretrain_v1',
-    'olmoearth_pretrain_v1',
-]
