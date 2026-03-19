@@ -33,7 +33,7 @@ class OlmoEarthPretrainV1_Weights(WeightsEnum):  # type: ignore[misc]
     """OlmoEarth v1 pre-trained weights from Hugging Face (allenai/OlmoEarth-v1-*)."""
 
     NANO = Weights(
-        url='https://huggingface.co/allenai/OlmoEarth-v1-Nano/resolve/main/weights.pth',
+        url='https://hf.co/allenai/OlmoEarth-v1-Nano/resolve/c48459cd6264704b9d1761a2904c46eb98755fda/weights.pth',
         transforms=_olmoearth_transforms,
         meta={'model_size': 'nano', 'repo': 'allenai/OlmoEarth-v1-Nano'},
     )
