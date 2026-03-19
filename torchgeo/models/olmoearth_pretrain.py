@@ -13,7 +13,7 @@ from ..datasets.utils import lazy_import
 _olmoearth_transforms = nn.Identity()
 
 
-class OlmoEarthPretrainV1_Weights(WeightsEnum):  # type: ignore[misc]
+class OlmoEarthPretrainV1_Weights(WeightsEnum):
     """OlmoEarth v1 pre-trained weights.
 
     If you use this model in your research, please cite the following paper:
