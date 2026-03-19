@@ -25,7 +25,7 @@ from .farseg import FarSeg
 from .fcn import FCN
 from .fcsiam import FCSiamConc, FCSiamDiff
 from .ltae import LTAE
-from .olmoearth import OlmoEarthPretrainV1_Weights, olmoearth_pretrain_v1
+from .olmoearth_pretrain import OlmoEarthPretrainV1_Weights, olmoearth_pretrain_v1
 from .panopticon import Panopticon, Panopticon_Weights, panopticon_vitb14
 from .presto import Presto, Presto_Weights, presto
 from .rcf import MOSAIKS, RCF

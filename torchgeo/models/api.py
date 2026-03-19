@@ -28,7 +28,7 @@ from .dofa import (
     dofa_small_patch16_224,
 )
 from .earthloc import EarthLoc_Weights, earthloc
-from .olmoearth import OlmoEarthPretrainV1_Weights, olmoearth_pretrain_v1
+from .olmoearth_pretrain import OlmoEarthPretrainV1_Weights, olmoearth_pretrain_v1
 from .panopticon import Panopticon_Weights, panopticon_vitb14
 from .presto import Presto_Weights, presto
 from .resnet import (
