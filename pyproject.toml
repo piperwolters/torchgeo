@@ -126,6 +126,8 @@ docs = [
 models = [
     # microsoft-aurora 1.6+ required for timm 1.0+ support
     "microsoft-aurora>=1.6",
+    # olmoearth-pretrain-minimal for OlmoEarth v1 pretrained models
+    "olmoearth-pretrain-minimal>=0.0.2",
 ]
 style = [
     # pandas 2.1.1+ required for Python 3.12 wheels
@@ -242,7 +244,6 @@ ignore = ["ANN401"]
 [tool.ruff.lint.per-file-ignores]
 "docs/**" = ["ANN", "D"]
 "tests/**" = ["D"]
-"torchgeo/models/olmoearth_pretrain_v1.py" = ["ANN204", "D"]
 
 [tool.ruff.lint.isort]
 split-on-trailing-comma = false

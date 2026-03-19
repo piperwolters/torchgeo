@@ -25,12 +25,16 @@ from .farseg import FarSeg
 from .fcn import FCN
 from .fcsiam import FCSiamConc, FCSiamDiff
 from .ltae import LTAE
-from .olmoearth_pretrain_v1 import (
-    Normalizer,
-    OlmoEarthPretrain_v1,
-    OlmoEarthPretrainV1_Weights,
-    olmoearth_pretrain_v1,
-)
+try:
+    from .olmoearth_pretrain_v1 import (
+        Normalizer,
+        OlmoEarthPretrain_v1,
+        OlmoEarthPretrainV1_Weights,
+        olmoearth_pretrain_v1,
+    )
+    _OLMOEARTH_AVAILABLE = True
+except ImportError:
+    _OLMOEARTH_AVAILABLE = False
 from .panopticon import Panopticon, Panopticon_Weights, panopticon_vitb14
 from .presto import Presto, Presto_Weights, presto
 from .rcf import MOSAIKS, RCF
@@ -163,3 +167,6 @@ __all__ = (
     'vit_small_patch14_dinov2',
     'vit_small_patch16_224',
 )
+if not _OLMOEARTH_AVAILABLE:
+    # Remove OlmoEarth names from __all__ when optional dependency is missing
+    __all__ = tuple(x for x in __all__ if not x.startswith(('Normalizer', 'OlmoEarth')) and x != 'olmoearth_pretrain_v1')

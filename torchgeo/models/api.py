@@ -28,7 +28,11 @@ from .dofa import (
     dofa_small_patch16_224,
 )
 from .earthloc import EarthLoc_Weights, earthloc
-from .olmoearth_pretrain_v1 import OlmoEarthPretrainV1_Weights, olmoearth_pretrain_v1
+try:
+    from .olmoearth_pretrain_v1 import OlmoEarthPretrainV1_Weights, olmoearth_pretrain_v1
+    _OLMOEARTH_AVAILABLE = True
+except ImportError:
+    _OLMOEARTH_AVAILABLE = False
 from .panopticon import Panopticon_Weights, panopticon_vitb14
 from .presto import Presto_Weights, presto
 from .resnet import (
@@ -80,7 +84,6 @@ _model: dict[str, Callable[..., nn.Module]] = {
     'dofa_large_patch16_224': dofa_large_patch16_224,
     'dofa_small_patch16_224': dofa_small_patch16_224,
     'earthloc': earthloc,
-    'olmoearth_pretrain_v1': olmoearth_pretrain_v1,
     'panopticon_vitb14': panopticon_vitb14,
     'presto': presto,
     'resnet18': resnet18,
@@ -102,6 +105,8 @@ _model: dict[str, Callable[..., nn.Module]] = {
     'vit_large_patch16_224': vit_large_patch16_224,
     'vit_small_patch14_dinov2': vit_small_patch14_dinov2,
 }
+if _OLMOEARTH_AVAILABLE:
+    _model['olmoearth_pretrain_v1'] = olmoearth_pretrain_v1
 
 _model_weights: dict[str | Callable[..., nn.Module], WeightsEnum] = {  # type:ignore[invalid-assignment]
     aurora_swin_unet: Aurora_Weights,
@@ -111,7 +116,6 @@ _model_weights: dict[str | Callable[..., nn.Module], WeightsEnum] = {  # type:ig
     dofa_base_patch16_224: DOFABase16_Weights,
     dofa_large_patch16_224: DOFALarge16_Weights,
     earthloc: EarthLoc_Weights,
-    olmoearth_pretrain_v1: OlmoEarthPretrainV1_Weights,
     panopticon_vitb14: Panopticon_Weights,
     presto: Presto_Weights,
     resnet18: ResNet18_Weights,
@@ -139,7 +143,6 @@ _model_weights: dict[str | Callable[..., nn.Module], WeightsEnum] = {  # type:ig
     'dofa_base_patch16_224': DOFABase16_Weights,
     'dofa_large_patch16_224': DOFALarge16_Weights,
     'earthloc': EarthLoc_Weights,
-    'olmoearth_pretrain_v1': OlmoEarthPretrainV1_Weights,
     'panopticon_vitb14': Panopticon_Weights,
     'presto': Presto_Weights,
     'resnet18': ResNet18_Weights,
@@ -161,6 +164,9 @@ _model_weights: dict[str | Callable[..., nn.Module], WeightsEnum] = {  # type:ig
     'vit_large_patch16_224': ViTLarge16_Weights,
     'vit_small_patch14_dinov2': ViTSmall14_DINOv2_Weights,
 }
+if _OLMOEARTH_AVAILABLE:
+    _model_weights[olmoearth_pretrain_v1] = OlmoEarthPretrainV1_Weights
+    _model_weights['olmoearth_pretrain_v1'] = OlmoEarthPretrainV1_Weights
 
 
 def get_model(name: str, *args: Any, **kwargs: Any) -> nn.Module:
