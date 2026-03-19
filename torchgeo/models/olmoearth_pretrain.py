@@ -75,7 +75,6 @@ def olmoearth_pretrain_v1(
     model_size = kwargs.pop('model_size', 'nano')
     if weights is not None:
         model_size = weights.meta.get('model_size', model_size)
-        kwargs['model_size'] = model_size
     model: nn.Module = olmoearth.OlmoEarthPretrain_v1(
         model_size=model_size, **kwargs
     )

@@ -20,13 +20,13 @@ class TestOlmoEarthPretrainV1:
 
     @pytest.fixture
     def mocked_weights(
-        self, tmp_path: Path, monkeypatch: MonkeyPatch
+        self, tmp_path: Path, monkeypatch: MonkeyPatch, load_state_dict_from_url: None
     ) -> OlmoEarthPretrainV1_Weights:
         weights = OlmoEarthPretrainV1_Weights.NANO
         path = tmp_path / 'weights.pth'
         model = olmoearth_pretrain_v1(model_size='nano')
         torch.save(model.state_dict(), path)
-        monkeypatch.setattr(weights, 'url', str(path))
+        monkeypatch.setattr(weights.value, 'url', str(path))
         return weights
 
     def test_olmoearth_pretrain_v1(self) -> None:
