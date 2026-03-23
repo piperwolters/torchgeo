@@ -52,7 +52,7 @@ def olmoearth_pretrain_v1(
 
     If you use this model in your research, please cite the following paper:
 
-    * https://arxiv.org/abs/2506.10890
+    * https://arxiv.org/abs/2511.13655
 
     This model requires the following additional library to be installed:
 
