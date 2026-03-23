@@ -59,7 +59,7 @@ def olmoearth_pretrain_v1(
     * `olmoearth-pretrain-minimal <https://pypi.org/project/olmoearth-pretrain-minimal/>`_:
       to load the models.
 
-    .. versionadded:: 0.8
+    .. versionadded:: 0.10
 
     Args:
         weights: Pre-trained weights. If ``None``, model is randomly initialized.
