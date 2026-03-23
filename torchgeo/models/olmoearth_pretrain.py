@@ -18,7 +18,7 @@ class OlmoEarthPretrainV1_Weights(WeightsEnum):
 
     If you use this model in your research, please cite the following paper:
 
-    * https://arxiv.org/abs/2506.10890
+    * https://arxiv.org/abs/2511.13655
 
     .. versionadded:: 0.8
     """
