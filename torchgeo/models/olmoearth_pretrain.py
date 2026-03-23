@@ -20,7 +20,7 @@ class OlmoEarthPretrainV1_Weights(WeightsEnum):
 
     * https://arxiv.org/abs/2511.13655
 
-    .. versionadded:: 0.8
+    .. versionadded:: 0.10
     """
 
     NANO = Weights(
