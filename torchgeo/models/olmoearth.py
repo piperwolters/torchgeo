@@ -17,8 +17,8 @@ _olmoearth_meta = {
     'model': 'OlmoEarthPretrain_v1',
     'architecture': 'Vision Transformer',
     'publication': 'https://arxiv.org/abs/2506.10890',
-    'repo': 'https://github.com/allenai/olmoearth-pretrain-minimal',
-    'license': 'Apache-2.0',
+    'repo': 'https://github.com/allenai/olmoearth_pretrain',
+    'license': 'OlmoEarth Artifact License',
     'model_size': None,
     'hf_repo': None,
 }
