@@ -1,7 +1,7 @@
 # Copyright (c) TorchGeo Contributors. All rights reserved.
 # Licensed under the MIT License.
 
-"""Pre-trained OlmoEarth Pretrain v1 models."""
+"""Pre-trained OlmoEarth v1 models."""
 
 from typing import Any
 
@@ -12,8 +12,19 @@ from ..datasets.utils import lazy_import
 
 _olmoearth_transforms = nn.Identity()
 
+_olmoearth_meta = {
+    'dataset': 'Major TOM',
+    'model': 'OlmoEarthPretrain_v1',
+    'architecture': 'Vision Transformer',
+    'publication': 'https://arxiv.org/abs/2506.10890',
+    'repo': 'https://github.com/allenai/olmoearth-pretrain-minimal',
+    'license': 'Apache-2.0',
+    'model_size': None,
+    'hf_repo': None,
+}
 
-class OlmoEarthPretrainV1_Weights(WeightsEnum):
+
+class OlmoEarthV1_Weights(WeightsEnum):
     """OlmoEarth v1 pre-trained weights.
 
     If you use this model in your research, please cite the following paper:
@@ -26,29 +37,45 @@ class OlmoEarthPretrainV1_Weights(WeightsEnum):
     NANO = Weights(
         url='https://huggingface.co/allenai/OlmoEarth-v1-Nano/resolve/c48459cd6264704b9d1761a2904c46eb98755fda/weights.pth',
         transforms=_olmoearth_transforms,
-        meta={'model_size': 'nano', 'repo': 'allenai/OlmoEarth-v1-Nano'},
+        meta=_olmoearth_meta
+        | {
+            'model_size': 'nano',
+            'hf_repo': 'allenai/OlmoEarth-v1-Nano',
+        },
     )
     TINY = Weights(
         url='https://huggingface.co/allenai/OlmoEarth-v1-Tiny/resolve/edd9418badc5a9f769ba1aa622cb6d0af4586f8b/weights.pth',
         transforms=_olmoearth_transforms,
-        meta={'model_size': 'tiny', 'repo': 'allenai/OlmoEarth-v1-Tiny'},
+        meta=_olmoearth_meta
+        | {
+            'model_size': 'tiny',
+            'hf_repo': 'allenai/OlmoEarth-v1-Tiny',
+        },
     )
     BASE = Weights(
         url='https://huggingface.co/allenai/OlmoEarth-v1-Base/resolve/93589e2dee5b5c95a660d1e9365bc017ea7f35d6/weights.pth',
         transforms=_olmoearth_transforms,
-        meta={'model_size': 'base', 'repo': 'allenai/OlmoEarth-v1-Base'},
+        meta=_olmoearth_meta
+        | {
+            'model_size': 'base',
+            'hf_repo': 'allenai/OlmoEarth-v1-Base',
+        },
     )
     LARGE = Weights(
         url='https://huggingface.co/allenai/OlmoEarth-v1-Large/resolve/8cf072c70d4a1c403531ca9a9653bb1f8f60eb83/weights.pth',
         transforms=_olmoearth_transforms,
-        meta={'model_size': 'large', 'repo': 'allenai/OlmoEarth-v1-Large'},
+        meta=_olmoearth_meta
+        | {
+            'model_size': 'large',
+            'hf_repo': 'allenai/OlmoEarth-v1-Large',
+        },
     )
 
 
-def olmoearth_pretrain_v1(
-    weights: OlmoEarthPretrainV1_Weights | None = None, **kwargs: Any
+def olmoearth_v1(
+    weights: OlmoEarthV1_Weights | None = None, **kwargs: Any
 ) -> nn.Module:
-    """OlmoEarth Pretrain v1 model.
+    """OlmoEarth v1 model.
 
     If you use this model in your research, please cite the following paper:
 
@@ -68,7 +95,7 @@ def olmoearth_pretrain_v1(
             (e.g. ``model_size``, ``max_patch_size``).
 
     Returns:
-        An OlmoEarth Pretrain v1 model.
+        An OlmoEarth v1 model.
     """
     olmoearth = lazy_import('olmoearth_pretrain_minimal')
 

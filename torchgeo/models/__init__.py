@@ -25,7 +25,7 @@ from .farseg import FarSeg
 from .fcn import FCN
 from .fcsiam import FCSiamConc, FCSiamDiff
 from .ltae import LTAE
-from .olmoearth_pretrain import OlmoEarthPretrainV1_Weights, olmoearth_pretrain_v1
+from .olmoearth import OlmoEarthV1_Weights, olmoearth_v1
 from .panopticon import Panopticon, Panopticon_Weights, panopticon_vitb14
 from .presto import Presto, Presto_Weights, presto
 from .rcf import MOSAIKS, RCF
@@ -94,7 +94,7 @@ __all__ = (
     'FCSiamConc',
     'FCSiamDiff',
     'FarSeg',
-    'OlmoEarthPretrainV1_Weights',
+    'OlmoEarthV1_Weights',
     'Panopticon',
     'Panopticon_Weights',
     'Presto',
@@ -134,7 +134,7 @@ __all__ = (
     'get_model_weights',
     'get_weight',
     'list_models',
-    'olmoearth_pretrain_v1',
+    'olmoearth_v1',
     'panopticon_vitb14',
     'presto',
     'resnet18',
