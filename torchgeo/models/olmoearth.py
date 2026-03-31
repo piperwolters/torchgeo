@@ -29,9 +29,9 @@ class OlmoEarthV1_Weights(WeightsEnum):
 
     If you use this model in your research, please cite the following paper:
 
-    * https://arxiv.org/abs/2506.10890
+    * https://arxiv.org/abs/2511.13655
 
-    .. versionadded:: 0.8
+    .. versionadded:: 0.10
     """
 
     NANO = Weights(
@@ -79,14 +79,14 @@ def olmoearth_v1(
 
     If you use this model in your research, please cite the following paper:
 
-    * https://arxiv.org/abs/2506.10890
+    * https://arxiv.org/abs/2511.13655
 
     This model requires the following additional library to be installed:
 
     * `olmoearth-pretrain-minimal <https://pypi.org/project/olmoearth-pretrain-minimal/>`_:
       to load the models.
 
-    .. versionadded:: 0.8
+    .. versionadded:: 0.10
 
     Args:
         weights: Pre-trained weights. If ``None``, model is randomly initialized.
@@ -105,7 +105,5 @@ def olmoearth_v1(
     model: nn.Module = olmoearth.OlmoEarthPretrain_v1(model_size=model_size, **kwargs)
     if weights is not None:
         state_dict = weights.get_state_dict(progress=True)
-        if not any(k.startswith('model.') for k in state_dict):
-            state_dict = {f'model.{k}': v for k, v in state_dict.items()}
         model.load_state_dict(state_dict, strict=False)
     return model
