@@ -32,13 +32,9 @@ class TestOlmoEarthV1:
     def test_olmoearth_v1(self) -> None:
         olmoearth_v1()
 
-    def test_olmoearth_v1_weights(
-        self, mocked_weights: OlmoEarthV1_Weights
-    ) -> None:
+    def test_olmoearth_v1_weights(self, mocked_weights: OlmoEarthV1_Weights) -> None:
         olmoearth_v1(weights=mocked_weights)
 
     @pytest.mark.slow
-    def test_olmoearth_v1_download(
-        self, weights: OlmoEarthV1_Weights
-    ) -> None:
+    def test_olmoearth_v1_download(self, weights: OlmoEarthV1_Weights) -> None:
         olmoearth_v1(weights=weights)

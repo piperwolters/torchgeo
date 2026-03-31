@@ -38,37 +38,25 @@ class OlmoEarthV1_Weights(WeightsEnum):
         url='https://huggingface.co/allenai/OlmoEarth-v1-Nano/resolve/c48459cd6264704b9d1761a2904c46eb98755fda/weights.pth',
         transforms=_olmoearth_transforms,
         meta=_olmoearth_meta
-        | {
-            'model_size': 'nano',
-            'hf_repo': 'allenai/OlmoEarth-v1-Nano',
-        },
+        | {'model_size': 'nano', 'hf_repo': 'allenai/OlmoEarth-v1-Nano'},
     )
     TINY = Weights(
         url='https://huggingface.co/allenai/OlmoEarth-v1-Tiny/resolve/edd9418badc5a9f769ba1aa622cb6d0af4586f8b/weights.pth',
         transforms=_olmoearth_transforms,
         meta=_olmoearth_meta
-        | {
-            'model_size': 'tiny',
-            'hf_repo': 'allenai/OlmoEarth-v1-Tiny',
-        },
+        | {'model_size': 'tiny', 'hf_repo': 'allenai/OlmoEarth-v1-Tiny'},
     )
     BASE = Weights(
         url='https://huggingface.co/allenai/OlmoEarth-v1-Base/resolve/93589e2dee5b5c95a660d1e9365bc017ea7f35d6/weights.pth',
         transforms=_olmoearth_transforms,
         meta=_olmoearth_meta
-        | {
-            'model_size': 'base',
-            'hf_repo': 'allenai/OlmoEarth-v1-Base',
-        },
+        | {'model_size': 'base', 'hf_repo': 'allenai/OlmoEarth-v1-Base'},
     )
     LARGE = Weights(
         url='https://huggingface.co/allenai/OlmoEarth-v1-Large/resolve/8cf072c70d4a1c403531ca9a9653bb1f8f60eb83/weights.pth',
         transforms=_olmoearth_transforms,
         meta=_olmoearth_meta
-        | {
-            'model_size': 'large',
-            'hf_repo': 'allenai/OlmoEarth-v1-Large',
-        },
+        | {'model_size': 'large', 'hf_repo': 'allenai/OlmoEarth-v1-Large'},
     )
 
 
