@@ -95,3 +95,30 @@ def olmoearth_v1(
         state_dict = weights.get_state_dict(progress=True)
         model.load_state_dict(state_dict, strict=False)
     return model
+
+
+def olmoearth_v1_unet_decoder(**kwargs: Any) -> nn.Module:
+    """UNet-style decoder head for OlmoEarth v1 features.
+
+    A progressive upsampling decoder that turns OlmoEarth ViT patch tokens
+    (B, H_p, W_p, D) into per-pixel logits (B, num_classes, H, W), for
+    segmentation or regression on top of a frozen or fine-tuned backbone.
+
+    This model requires the following additional library to be installed:
+
+    * `olmoearth-pretrain-minimal <https://pypi.org/project/olmoearth-pretrain-minimal/>`_:
+      to build the decoder.
+
+    .. versionadded:: 0.10
+
+    Args:
+        **kwargs: Passed to ``olmoearth_pretrain_minimal.UNetDecoder``
+            (``in_dim``, ``num_classes``, ``patch_size``, and optionally
+            ``conv_layers_per_resolution``).
+
+    Returns:
+        A UNet-style decoder head.
+    """
+    olmoearth = lazy_import('olmoearth_pretrain_minimal')
+    decoder: nn.Module = olmoearth.UNetDecoder(**kwargs)
+    return decoder
