@@ -29,6 +29,7 @@ from .olmoearth_pretrain_v1 import (
     Normalizer,
     OlmoEarthPretrain_v1,
     OlmoEarthPretrainV1_Weights,
+    UNetDecoder,
     olmoearth_pretrain_v1,
 )
 from .panopticon import Panopticon, Panopticon_Weights, panopticon_vitb14
@@ -121,6 +122,7 @@ __all__ = (
     'Tessera_Weights',
     'TileNet',
     'TileNet_Weights',
+    'UNetDecoder',
     'Unet_Weights',
     'ViTBase14_DINOv2_Weights',
     'ViTBase16_Weights',
