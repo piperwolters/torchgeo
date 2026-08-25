@@ -11,7 +11,11 @@ import torchvision
 from pytest import MonkeyPatch
 
 
-def load(*args: Any, progress: bool = False, **kwargs: Any) -> Any:
+def load(
+    *args: Any, progress: bool = False, file_name: str | None = None, **kwargs: Any
+) -> Any:
+    # file_name only names the torch.hub cache entry, which this stub bypasses by loading the
+    # path directly, so accept and ignore it the way the real signature allows.
     return torch.load(*args, **kwargs)
 
 
