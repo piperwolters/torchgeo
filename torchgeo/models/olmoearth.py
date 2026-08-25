@@ -59,24 +59,6 @@ class OlmoEarthV1_Weights(WeightsEnum):
         | {'model_size': 'large', 'hf_repo': 'allenai/OlmoEarth-v1-Large'},
     )
 
-    def get_state_dict(self, *args: Any, **kwargs: Any) -> Any:
-        """Get the state dict for these weights.
-
-        Every entry's URL ends in ``weights.pth`` and :func:`torch.hub.load_state_dict_from_url`
-        caches by file name, so without a distinct name per entry all four sizes share one cache
-        file: whichever is downloaded first is then reused for the rest, and loading it into a
-        different size fails with a shape mismatch. Give each entry its own cache file name.
-
-        Args:
-            *args: Anything passed to ``WeightsEnum.get_state_dict``.
-            **kwargs: Anything passed to ``WeightsEnum.get_state_dict``.
-
-        Returns:
-            The state dict for these weights.
-        """
-        kwargs.setdefault('file_name', f'olmoearth_{self.name.lower()}.pth')
-        return WeightsEnum.get_state_dict(self, *args, **kwargs)
-
 
 def olmoearth_v1(
     weights: OlmoEarthV1_Weights | None = None, **kwargs: Any

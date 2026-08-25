@@ -12,10 +12,14 @@ from pytest import MonkeyPatch
 
 
 def load(
-    *args: Any, progress: bool = False, file_name: str | None = None, **kwargs: Any
+    *args: Any,
+    progress: bool = False,
+    check_hash: bool = False,
+    file_name: str | None = None,
+    **kwargs: Any,
 ) -> Any:
-    # file_name only names the torch.hub cache entry, which this stub bypasses by loading the
-    # path directly, so accept and ignore it the way the real signature allows.
+    # check_hash and file_name only concern the torch.hub download and its cache entry, which
+    # this stub bypasses by loading the path directly, so accept and ignore them.
     return torch.load(*args, **kwargs)
 
 

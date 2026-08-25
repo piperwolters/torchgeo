@@ -1,12 +1,11 @@
 # Copyright (c) TorchGeo Contributors. All rights reserved.
 # Licensed under the MIT License.
 
+import re
 from pathlib import Path
-from typing import Any
 
 import pytest
 import torch
-import torchvision
 from _pytest.fixtures import SubRequest
 from pytest import MonkeyPatch
 
@@ -55,30 +54,17 @@ class TestOlmoEarthV1:
         for key, value in one.items():
             assert torch.equal(value, two[key]), key
 
-    def test_olmoearth_v1_cache_file_names_are_distinct(
-        self, monkeypatch: MonkeyPatch
-    ) -> None:
-        """Every entry must cache under its own file name.
+    def test_olmoearth_v1_urls_are_hash_named_and_distinct(self) -> None:
+        """Every entry's file name must be distinct and carry its sha256.
 
-        All four URLs end in ``weights.pth`` and :func:`torch.hub.load_state_dict_from_url`
-        caches by file name, so entries sharing one would silently reuse whichever size was
-        downloaded first, then fail to load it into a different size.
+        torch.hub caches by file name and only verifies a download when its HASH_REGEX finds a
+        hash in that name. A name shared between entries makes the sizes collide in one cache
+        file; a name without a hash makes ``check_hash=True`` a silent no-op.
         """
-        seen: list[str | None] = []
-
-        def capture(
-            url: str, *args: Any, file_name: str | None = None, **kwargs: Any
-        ) -> dict[str, Any]:
-            seen.append(file_name)
-            return {}
-
-        monkeypatch.setattr(
-            torchvision.models._api, 'load_state_dict_from_url', capture
-        )
-        for weights in OlmoEarthV1_Weights:
-            weights.get_state_dict()
-        assert len(seen) == len(OlmoEarthV1_Weights)
-        assert len(set(seen)) == len(seen)
+        names = [weights.url.rsplit('/', 1)[-1] for weights in OlmoEarthV1_Weights]
+        assert len(set(names)) == len(names)
+        for name in names:
+            assert re.fullmatch(r'weights-[0-9a-f]{64}\.pth', name), name
 
     @pytest.mark.slow
     def test_olmoearth_v1_download(self, weights: OlmoEarthV1_Weights) -> None:
