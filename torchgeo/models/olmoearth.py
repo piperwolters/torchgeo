@@ -90,6 +90,12 @@ def olmoearth_v1(
     model_size = kwargs.pop('model_size', 'nano')
     if weights is not None:
         model_size = weights.meta.get('model_size', model_size)
+    # These are the v1 weights, but olmoearth-pretrain-minimal 0.0.5+ defaults to the newer
+    # v1.2 architecture, which rebuilt the patch embeddings (Conv2d proj -> pixel_proj +
+    # Linear) and added rope_mixed_freqs buffers. Building v1.2 and loading v1 weights is a
+    # shape mismatch, so pin the architecture to match the checkpoints. Still overridable for
+    # randomly initialized models.
+    kwargs.setdefault('model_version', 'v1')
     model: nn.Module = olmoearth.OlmoEarthPretrain_v1(model_size=model_size, **kwargs)
     if weights is not None:
         state_dict = weights.get_state_dict(progress=True)
