@@ -129,7 +129,10 @@ models = [
     # microsoft-aurora 1.6+ required for timm 1.0+ support
     "microsoft-aurora>=1.6",
     # olmoearth-pretrain-minimal 0.0.2+ required for normalization support
-    "olmoearth-pretrain-minimal>=0.0.2",
+    # olmoearth-pretrain-minimal <0.0.5 required: 0.0.5+ rebuilt the patch embeddings
+    # (Conv2d proj -> pixel_proj + Linear) and added rope_mixed_freqs buffers, so the
+    # published OlmoEarthV1 checkpoints no longer match the architecture
+    "olmoearth-pretrain-minimal>=0.0.2,<0.0.5",
 ]
 style = [
     # pandas 2.1.1+ required for Python 3.12 wheels

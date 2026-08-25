@@ -93,5 +93,13 @@ def olmoearth_v1(
     model: nn.Module = olmoearth.OlmoEarthPretrain_v1(model_size=model_size, **kwargs)
     if weights is not None:
         state_dict = weights.get_state_dict(progress=True)
-        model.load_state_dict(state_dict, strict=False)
+        # The published checkpoints are keyed encoder.*/decoder.*, but OlmoEarthPretrain_v1
+        # holds the network in self.model, so its parameters are model.encoder.* etc. Without
+        # re-keying, the two name sets are disjoint and strict=False silently drops every
+        # tensor, returning a randomly initialized model.
+        state_dict = {f'model.{key}': value for key, value in state_dict.items()}
+        missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+
+        assert not missing_keys
+        assert not unexpected_keys
     return model
